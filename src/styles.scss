@@ -1,0 +1,23 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+
+
+// Import toastr
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~ngx-toastr/toastr-bs4-alert';
+
+/*@import “~ngx-toastr/toastr.css”;*/
+
+.toast-container .ngx-toastr {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.mat-tab-label{
+    font-weight:700;
+}

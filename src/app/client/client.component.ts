@@ -11,7 +11,6 @@ import { StatesService } from '../shared/services/states.service';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
-import {TaxService } from '../tax/tax.service';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
@@ -77,8 +76,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   @ViewChildren(FusePerfectScrollbarDirective)
   fuseScrollbarDirectives: QueryList<FusePerfectScrollbarDirective>;
 
-
-  constructor(private _formBuilder: FormBuilder, private propertyService: PropertyService, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService, private taxService: TaxService) {
+  constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService) {
 
   }
 

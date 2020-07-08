@@ -12,7 +12,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { ClientComponent } from 'app/client/client.component';
-
+import { GridModule } from '@fuse/components';
 const routes = [
   {
     path: 'client',
@@ -36,7 +36,8 @@ const routes = [
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
-    FuseSharedModule
+    FuseSharedModule,
+    GridModule
 
   ]
 })

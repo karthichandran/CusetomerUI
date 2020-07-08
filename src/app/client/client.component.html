@@ -31,12 +31,37 @@
     <!-- CONTENT CARD -->
     <div class="content-card">
       <div class="content p-24">
-        <div class="h2 mb-24">Customer Details</div>
+
         <div fusePerfectScrollbar>
           <!-- VERTICAL STEPPER EXAMPLE -->
-
+          <form fxLayout="column" [formGroup]="propertyForm">
+            <div class="h2 padding-tb-10">Property Details</div>
+            <div fxFlex="1 0 auto" fxLayout="row wrap">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Declaration Date</mat-label>
+                <input #declaration matInput [matDatepicker]="declarationDate" formControlName="declarationDate" required>
+                <mat-datepicker-toggle matSuffix [for]="declarationDate"></mat-datepicker-toggle>
+                <mat-datepicker #declarationDate></mat-datepicker>
+                <mat-error>Declaration Date is required!</mat-error>
+              </mat-form-field>
+              <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                <mat-label>Property</mat-label>
+                <mat-select formControlName="propertyId" required>
+                  <mat-option *ngFor="let option of propertyList" [value]="option.propertyID">
+                    {{option.addressPremises}}
+                  </mat-option>
+                </mat-select>
+                <mat-error>Property is required!</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Unit No</mat-label>
+                <input matInput type="number" maxlength="10" formControlName="unitNo" required>
+                <mat-error>Unit No is required!</mat-error>
+              </mat-form-field>
+            </div>
+          </form>
           <form fxLayout="column" [formGroup]="customerform">
-
+            <div class="h2 mb-24">Customer Details</div>
             <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Name (As in PAN)</mat-label>
@@ -47,27 +72,28 @@
               <div fxFlex>
                 <mat-form-field appearance="outline" style="width:98%;">
                   <mat-label>PAN</mat-label>
-                  <input matInput formControlName="pan" (keyup)="customerform.patchValue({pan: $event.target.value.toUpperCase()})" required>
+                  <input matInput formControlName="pan" (keyup)="customerform.patchValue({pan: $event.target.value.toUpperCase()})" (blur)="loadCustomerByPan($event.target.value)" required>
 
-                  <!--<input hidden type="file" #panDocument accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
-          <span matSuffix class="pan-upload" (click)="panUploadClick(panDocument)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
-          </span>-->
-
+                  <input hidden type="file" #panDocument accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
+                  <span matSuffix class="pan-upload" (click)="panUploadClick(panDocument)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                  </span>
+                  <!--<span matSuffix class="pan-upload" (click)="panDocument.click()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+        </span>-->
                   <mat-error>Valid PAN is required!</mat-error>
                 </mat-form-field><br />
-                <!--<div *ngIf="panDoc.fileName" class="padding-bottom-10">
-        <span class="pan-name-label">{{panDoc.fileName}}</span>
-        <img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'view')" />
-        <img src="assets/images/logos/icon-down-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'download')" />
-        <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(panDoc.blobID,'pan')">highlight_off</mat-icon>
-      </div>-->
+                <div *ngIf="panDoc.fileName" class="padding-bottom-10">
+                  <span class="pan-name-label">{{panDoc.fileName}}</span>
+                  <!--<img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'view')" />
+                  <img src="assets/images/logos/icon-down-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'download')" />
+                  <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(panDoc.blobID,'pan')">highlight_off</mat-icon>-->
+                </div>
               </div>
-              <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Name of the premises/Building/village</mat-label>
-                <input matInput formControlName="addressPremises">
-                <!--<mat-error>promises/Building/village is required!</mat-error>-->
-              </mat-form-field>
+              <!--<mat-form-field appearance="outline" fxFlex>
+      <mat-label>Name of the premises/Building/village</mat-label>
+      <input matInput formControlName="addressPremises">
+    </mat-form-field>-->
               <div fxFlex fxLayoutAlign="first center" *ngIf="showAddressClearBtn">
                 <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()" color="accent">
                   Clear Address
@@ -118,8 +144,7 @@
             </div>
 
             <div fxFlex="1 0 auto" fxLayout="row wrap">
-              <div fxLayout="row" fxFlex>
-                <div fxFlex="1 0 auto" fxLayout="row" class="mobile">
+              <div fxFlex fxLayout="row" style="width:100%">
                   <mat-form-field appearance="outline" fxFlex="20" style="padding-right:0px;margin-right:0px;">
                     <mat-label>ISD</mat-label>
                     <input matInput maxlength="4" formControlName="isd" [(ngModel)]="isd2way" placeholder="ISD">
@@ -129,10 +154,8 @@
                     <input matInput type="number" maxlength="10" formControlName="mobileNo" required>
                     <mat-error>Mobile is required!</mat-error>
                   </mat-form-field>
-                </div>
               </div>
-              <div fxLayout="row" fxFlex>
-                <div fxFlex="1 0 auto" fxLayout="row" class="mobile">
+              <div fxFlex fxLayout="row" style="width:100%">   
                   <mat-form-field appearance="outline" fxFlex="20" style="padding-right:0px;margin-right:0px;">
                     <mat-label>ISD</mat-label>
                     <input matInput maxlength="4" formControlName="isd" [(ngModel)]="isd2way">
@@ -141,7 +164,7 @@
                     <mat-label>Alternate number</mat-label>
                     <input matInput type="number" maxlength="10" formControlName="alternateNumber">
                   </mat-form-field>
-                </div>
+               
               </div>
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>D.O.B *</mat-label>
@@ -157,27 +180,29 @@
                 <input type="email" matInput formControlName="emailID" required>
                 <mat-error>Email is required!</mat-error>
               </mat-form-field>
-            
+
             </div>
             <div fxFlex="1 0 auto" fxLayout="row wrap">
               <div fxFlex>
-                <div  class="margin-tb-5" >
+                <div class="margin-tb-5">
                   <span class="radio-label">I/We want REpro Services to download Form 16B</span>
                   <mat-radio-group aria-label="Select an option" formControlName="form16b" style="align-self:center;">
                     <mat-radio-button value="yes">Yes</mat-radio-button>
                     <mat-radio-button value="no">No</mat-radio-button>
                   </mat-radio-group>
                 </div>
-              </div>            
+              </div>
             </div>
             <div fxFlex="1 0 auto" fxLayout="row wrap">
               <div fxFlex>
-                <div class="margin-tb-5">
-                  <label class="radio-label">I/We have already registered in TRACES</label>
-                  <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:center;">
-                    <mat-radio-button value="yes">Yes</mat-radio-button>
-                    <mat-radio-button value="no">No</mat-radio-button>
-                  </mat-radio-group>
+                <div class="margin-tb-5" fxLayout="row wrap">
+                  <div fxLayout="row wrap">
+                    <label fxLayout class="radio-label">I/We have already registered in TRACES</label>
+                    <mat-radio-group fxLayout aria-label="Select an option" formControlName="traces" style="align-self:center;">
+                      <mat-radio-button value="yes">Yes</mat-radio-button>
+                      <mat-radio-button value="no">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
                   <mat-form-field appearance="outline" fxFlex *ngIf="customerform.value.traces=='yes'">
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="tracesPassword">
@@ -185,48 +210,211 @@
                   </mat-form-field>
                 </div>
               </div>
-              <!--<div fxFlex style="align-self:center;">
-      <button mat-raised-button
-              class="add-product-button  mt-24 mt-md-0 mr-24 pink" style="float:right;" (click)="addCoClient()">
+              <div fxFlex style="align-self:center;">
+                <button mat-raised-button
+                        class="add-product-button margin-tb-5 mt-24 mt-md-0  pink" style="float:right;" (click)="addCoClient()">
 
-        <span>Add Co Owner </span>
-        <mat-icon class="s-22" style="margin-left:5px">group</mat-icon>
-      </button>
-    </div>-->
+                  <span>Add Co Owner </span>
+                  <mat-icon class="s-22" style="margin-left:5px">group</mat-icon>
+                </button>
+              </div>
             </div>
-            <!--<div id="academy-courses" class="sellers" *ngIf="clients.length>0" fxLayout="column" fxLayoutAlign="center">
-    <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
-      <span>Customers</span>
-    </div>
-    <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
-      <div class="course android" *ngFor="let client of clients" (click)="showClient($event,client)" fxFlex="100" fxFlex.gt-xs="50"
-           fxFlex.gt-sm="25" [@animate]="{value:'*',params:{y:'100%'}}">
-        <div class="course-content" fxLayout="column" fxFlex="1 1 auto">
-          <div class="header android-bg" [ngClass]="{'active':currentClientId==client.customerID}" fxLayout="row" fxLayoutAlign="center center">
-            <div class="category" fxFlex>
-              {{client.name}}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
-
-            <div fxLayout="row" fxLayoutAlign="center center">
-              <button mat-raised-button type="button" class="mr-16" (click)="saveCustomer()" color="accent">
-                Save
-              </button>
-
+            <div id="academy-courses" class="sellers" *ngIf="clients.length>0" fxLayout="column" fxLayoutAlign="center">
+              <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                <span>Customers</span>
+              </div>
+              <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+                <div class="course android" *ngFor="let client of clients" (click)="showClient($event,client)" fxFlex="100" fxFlex.gt-xs="50"
+                     fxFlex.gt-sm="25" [@animate]="{value:'*',params:{y:'100%'}}">
+                  <div class="course-content" fxLayout="column" fxFlex="1 1 auto">
+                    <div class="header android-bg" [ngClass]="{'active':currentClientId==client.customerID}" fxLayout="row" fxLayoutAlign="center center">
+                      <div class="category" fxFlex>
+                        {{client.name}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </form>
+          <div fxLayout="column">          
 
-        </div>
-      </div>
-      </div>
-      <!-- / CONTENT CARD -->
+            <div fxFlex="1 0 auto" fxLayout="row wrap">
+              <button mat-raised-button class="add-product-button margin-tb-5 mt-24 mt-md-0" color="accent" style="float:right;" (click)="refreshShareGrid()">
+                <span>Shares of Co-owners </span>
+              </button>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="row wrap" *ngIf="showShareGrid">
+              <div class="sellers" fxFlex>
+                <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                  <span>Co customers's shares in %</span>
+                </div>
+                <div fxLayout="column" style="padding:5px 0;">
+                  <grid [dataSet]="customerData" [gridColDef]="customerColumnDef"></grid>
+                </div>
+              </div>
+            </div>
+            <div class="h2 padding-t-10">Service Fee</div>
+            <div class="h3 ">For New bookings / No compliance cases</div>
 
+            <div fxFlex="1 0 auto" fxLayout="column" class="grid-table">
+              <div fxFlex="1 0 auto" fxLayout="row" class="header-row">
+                <div fxFlex>
+                  <span>Particulars</span>
+                </div>
+                <div fxFlex>
+                  <span>Service Fee</span>
+                </div>
+                <div fxFlex>
+                  <span>GST @ 18%</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    Total Payable
+                  </span>
+                </div>
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row" class="odd-row">
+                <div fxFlex>
+                  <span>Compliance for one owner</span>
+                </div>
+                <div fxFlex>
+                  <span>5,000</span>
+                </div>
+                <div fxFlex>
+                  <span>900</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    5,900
+                  </span>
+                </div>
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row" class="even-row">
+                <div fxFlex>
+                  <span>Compliance for 2 or more owners</span>
+                </div>
+                <div fxFlex>
+                  <span>6,000</span>
+                </div>
+                <div fxFlex>
+                  <span>1,080</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    7,080
+                  </span>
+                </div>
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row" class="odd-row">
+                <div fxFlex>
+                  <span>For one-time TDS compliance</span>
+                </div>
+                <div fxFlex>
+                  <span>2,000</span>
+                </div>
+                <div fxFlex>
+                  <span>360</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    2,360
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="h3 padding-t-10">For Old bookings who have complied partially and wants to opt for TDS compliance by REpro Services going forward</div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" class="grid-table">
+              <div fxFlex="1 0 auto" fxLayout="row" class="header-row">
+                <div fxFlex>
+                  <span>Particulars</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    Service Fee / transaction
+                    (a)
+                  </span>
+                </div>
+                <div fxFlex>
+                  <span>GST @ 18%</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    Total Payable (Including GST)
+                    (e)=(c)+(d)
+                  </span>
+                </div>
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row" class="odd-row">
+                <div fxFlex>
+                  <span>Compliance for one owner</span>
+                </div>
+                <div fxFlex>
+                  <span>250</span>
+                </div>
+                <div fxFlex>
+                  <span>45</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    295
+                  </span>
+                </div>
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row" class="even-row">
+                <div fxFlex>
+                  <span>Compliance for 2 or more owners</span>
+                </div>
+                <div fxFlex>
+                  <span>300</span>
+                </div>
+                <div fxFlex>
+                  <span>54</span>
+                </div>
+                <div fxFlex>
+                  <span>
+                    354
+                  </span>
+                </div>
+              </div>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="row wrap">
+              <div fxFlex>
+                <div fxLayout="column">
+                  <div fxFlex class="padding-tb-7">M/s. Repro Services</div>
+                  <div fxFlex class="padding-tb-7">
+                    ICICI Bank, Sahakara Nagar Branch
+                  </div>
+                  <div fxFlex class="padding-tb-7">Current A/c No. 060405002893</div>
+                  <div fxFlex class="padding-tb-7">IFSC – ICIC0000604</div>
+                </div>
+              </div>
+              <div fxFlex>
+                <img  height="150" width="150" src="assets/images/qr_code.png"/>
+              </div>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column">
+             
+              <div class="h3 padding-t-10"> You can also send the payment details by Email to <a>support@reproservices.in</a></div>
+              <div class="h3 padding-t-10">For any clarifications required please contact us,</div>
+              <div class="h3">R Ganesh -   +91 9620508968</div>
+              <div class="h3">Sriram B   -   +91 9663751471</div>
+            </div>
+              <div fxLayout="row" fxLayoutAlign="center center" class="margin-t-40">
+                <button mat-raised-button type="button" class="mr-16" (click)="saveCustomer()" color="accent">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+      </div>
     </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
   <!-- / CENTER -->
 </div>
 

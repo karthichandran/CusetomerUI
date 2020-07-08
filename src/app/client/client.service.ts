@@ -29,16 +29,20 @@ export class ClientService {
     return this.http.get(`/Customer`);
   }
 
+
+  getPropertyList(): Observable<any> {
+    return this.http.get(`/property/dropdown`);
+  }
+
   getCustomerByID(Id: string): Observable<any> {
     return this.http.get(`/prospect/${Id}`);
   }
  
-  saveCustomer(customer: any, isNewEntry: boolean): Observable<any> {
-    if (!isNewEntry)
-      return this.http.put('/prospect', { 'prospectDto': customer });
-    else {
-      return this.http.post('/prospect', { 'prospectDto': customer });
-    }
+  saveCustomer(customer: any): Observable<any> {
+      return this.http.post('/prospect', { 'prospectVm': customer });
+  }
+  test(): Observable<any> {
+    return this.http.post('/prospect', { 'prospectVm': {'val':0} });
   } 
 
    uploadFile(formData: FormData,id:string): Observable<any> {    
@@ -57,5 +61,14 @@ export class ClientService {
   getRemarks(): Observable<any> {
     return this.http.get(`/remarks`);
   }
+  getCustomerByPan(Id: string): Observable<any> {
+    return this.http.get(`/customer/pan/${Id}`);
+  }
 
+  uploadPan(formData: FormData, id: string): Observable<any> {
+    return this.http.post('/files/panId/' + id , formData, { reportProgress: true, observe: 'events' });
+  }
+  getUploadedPan(Id: string): Observable<any> {
+    return this.http.get(`/files/fileDetails/panId/${Id}`);
+  }
 }

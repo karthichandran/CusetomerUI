@@ -34,10 +34,23 @@ export class ClientService {
     return this.http.get(`/property/dropdown`);
   }
 
+  getCustomerAndProperty(id: number): Observable<any> {
+    return this.http.get(`/prospect/prospectAndProperty/${id}`);
+  }
+
   getCustomerByID(Id: string): Observable<any> {
     return this.http.get(`/prospect/${Id}`);
   }
- 
+  saveOneCustomer(customer: any, isNew: boolean): Observable<any> {
+    if(isNew)
+      return this.http.post('/prospect/customer', { 'prospectDto': customer });
+    else
+      return this.http.put('/prospect', { 'prospectDto': customer });
+  }
+  updateShares(customers: any): Observable<any> {
+    return this.http.put('/prospect/updateShares', { 'prospectVm': customers });
+  }
+
   saveCustomer(customer: any): Observable<any> {
       return this.http.post('/prospect', { 'prospectVm': customer });
   }

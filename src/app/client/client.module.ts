@@ -13,12 +13,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { ClientComponent } from 'app/client/client.component';
 import { GridModule } from '@fuse/components';
+
 const routes = [
   {
     path: 'client',
     component: ClientComponent
   }
 ];
+
+
 
 @NgModule({
   declarations: [
@@ -38,8 +41,9 @@ const routes = [
     MatDatepickerModule,
     FuseSharedModule,
     GridModule
-
-  ]
-})
+   
+  ], providers: []
+}
+)
 export class ClientModule {
 }

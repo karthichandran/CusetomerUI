@@ -25,12 +25,17 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+import { CustomDateAdapter } from 'app/custom.date.adapter';
+import { DateAdapter } from '@angular/material/core';
+
 const appRoutes: Routes = [
   {
     path: '**',
     redirectTo: 'client'
   }
 ];
+
+
 
 @NgModule({
   declarations: [
@@ -68,12 +73,11 @@ const appRoutes: Routes = [
 
     // App modules
     LayoutModule,  
-    CoreModule,
-   
-    ClientModule,
-
+    CoreModule,   
+    ClientModule
   ],
   providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter}
    // { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

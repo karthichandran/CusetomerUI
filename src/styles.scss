@@ -21,3 +21,12 @@
 .mat-tab-label{
     font-weight:700;
 }
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.5em 0 0.5em 0 !important;
+}
+
+.mat-form-field-label-wrapper {
+  top: -1.4em !important;
+  padding-top: 0.84375em;
+}

@@ -228,7 +228,7 @@ cursor:pointer;
   margin-top: 20px !important;
 }
 .pan-name-label {
-  margin-left: 10px;
+  margin:0 10px;
   color: #28a745;
   font-size: large;
   font-weight: 900;
@@ -237,4 +237,7 @@ cursor:pointer;
 .section-title {
   color: #039be5;
   font-weight: 600;
+}
+.yellow {
+  background-color: #e6c810;
 }

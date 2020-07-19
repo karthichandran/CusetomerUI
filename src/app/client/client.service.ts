@@ -84,4 +84,8 @@ export class ClientService {
   getUploadedPan(Id: string): Observable<any> {
     return this.http.get(`/files/fileDetails/panId/${Id}`);
   }
+
+  deleteFile(Id: string): Observable<any> {
+    return this.http.delete(`/files/blobId/${Id}`);
+  }
 }

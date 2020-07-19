@@ -75,19 +75,21 @@
                   <input matInput formControlName="pan" (keyup)="customerform.patchValue({pan: $event.target.value.toUpperCase()})" (blur)="loadCustomerByPan($event.target.value)" required>
 
                   <input hidden type="file" #panDocument accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
-                  <span matSuffix class="pan-upload" (click)="panUploadClick(panDocument)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
-                  </span>
-                  <!--<span matSuffix class="pan-upload" (click)="panDocument.click()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
-                  </span>-->
+                  <div matSuffix style="display:flex;">
+                    <span  class="pan-upload" (click)="panUploadClick(panDocument)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                    </span>
+                    <span  class="pan-upload" (click)="openDialog()" style="cursor:pointer;">
+                      <mat-icon class="s-22" style="margin-left:5px">add_a_photo</mat-icon>
+                    </span>
+                  </div>
                   <mat-error>Valid PAN is required!</mat-error>
                 </mat-form-field><br />
                 <div *ngIf="panDoc.fileName" class="padding-bottom-10">
                   <span class="pan-name-label">{{panDoc.fileName}}</span>
-                  <!--<img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'view')" />
+                  <img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'view')" />
                   <img src="assets/images/logos/icon-down-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'download')" />
-                  <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(panDoc.blobID,'pan')">highlight_off</mat-icon>-->
+                  <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(panDoc.blobID,'pan')">highlight_off</mat-icon>
                 </div>
               </div>
               <mat-form-field appearance="outline" fxFlex>
@@ -105,8 +107,8 @@
 
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Flat/Door/Block No</mat-label>
-                <input matInput formControlName="adressLine1">
-                <!--<mat-error>Flat/Door/Block No is required!</mat-error>-->
+                <input matInput formControlName="adressLine1" required>
+                <mat-error>Flat/Door/Block No is required!</mat-error>
               </mat-form-field>
 
               <mat-form-field appearance="outline" fxFlex>
@@ -168,7 +170,7 @@
               </div>
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>D.O.B *</mat-label>
-                <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth">
+                <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth" placeholder="DD-MMM-YYYY">
                 <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
                 <mat-datepicker #birthDate></mat-datepicker>
               </mat-form-field>
@@ -210,22 +212,24 @@
                   </mat-form-field>
                 </div>
               </div>
-              <!--<div fxFlex style="align-self:center;">
+              <div fxFlex style="align-self:center;">
                 <button mat-raised-button
                         class="add-product-button margin-tb-5 mt-24 mt-md-0  pink" style="float:right;" (click)="addCoClient()">
 
                   <span>Add Co Owner </span>
                   <mat-icon class="s-22" style="margin-left:5px">group</mat-icon>
                 </button>
-              </div>-->
+              </div>
             </div>
             <div fxLayout="row" fxLayoutAlign="center center" class="margin-t-40">
-              <button mat-raised-button type="button" class="mr-16" (click)="saveOneCustomer()" color="accent">
+              <button mat-raised-button type="button" class="mr-16" (click)="saveOneCustomer(false)" color="accent">
                 Save
               </button>
-              <button mat-raised-button type="button" class="ml-16" (click)="clearCustomer()" color="basic">
+              <button mat-raised-button type="button" class="ml-16 mr-16 yellow" (click)="clearCustomer()" color="basic">
                 Clear
               </button>
+
+             
             </div>
             <div id="academy-courses" class="sellers margin-t-20" *ngIf="clients.length>0" fxLayout="column" fxLayoutAlign="center">
               <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
@@ -257,10 +261,10 @@
               <span class="h2 padding-tb-10 section-title">Co customers's shares in %</span>
             </div>
 
-            <div fxLayout="column" >
+            <div fxLayout="column">
               <grid [dataSet]="customerData" [gridColDef]="customerColumnDef"></grid>
 
-              <div class="h2 margin-t-20 section-title">Service Fee</div>
+              <div class="h2 margin-t-20 section-title">REpro Service Fee</div>
               <div class="h3 ">For New bookings / No compliance cases</div>
 
               <div fxFlex="1 0 auto" fxLayout="column" class="grid-table">
@@ -384,6 +388,9 @@
                 </div>
 
               </div>
+              <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                <span class="h2 padding-tb-10 section-title">Bank Details</span>
+              </div>
               <div fxFlex="1 0 auto" fxLayout="row wrap">
                 <div fxFlex>
                   <div fxLayout="column">
@@ -401,7 +408,8 @@
               </div>
               <div fxFlex="1 0 auto" fxLayout="column">
 
-                <div class="h3 padding-t-10"> You can also send the payment details by Email to <a>support@reproservices.in</a></div>
+                <div class="h3 padding-t-10"> Please share the payment confirmation proof by email to <a>tdscompliance@reproservices.in</a></div>
+                <div class="h3 padding-t-10"> Further I/we undertake to pay interest, late filing fees, penalty (if any) and also address any income tax proceedings on my TDS liability paid belatedly / payable as on date.</div>
                 <div class="h3 padding-t-10">For any clarifications required please contact us,</div>
                 <div class="h3">R Ganesh -   +91 9620508968</div>
                 <div class="h3">Sriram B   -   +91 9663751471</div>

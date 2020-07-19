@@ -13,7 +13,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { ClientComponent } from 'app/client/client.component';
 import { GridModule } from '@fuse/components';
-
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ImageCaptureDialogComponent} from 'app/image-capture/image-capture.component';
 const routes = [
   {
     path: 'client',
@@ -21,11 +22,10 @@ const routes = [
   }
 ];
 
-
-
 @NgModule({
   declarations: [
-    ClientComponent
+    ClientComponent,
+    ImageCaptureDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -40,7 +40,8 @@ const routes = [
     MatSelectModule,
     MatDatepickerModule,
     FuseSharedModule,
-    GridModule
+    GridModule,
+    MatDialogModule
    
   ], providers: []
 }

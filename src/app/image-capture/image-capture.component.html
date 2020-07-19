@@ -1,0 +1,49 @@
+
+<h2 mat-dialog-title>Upload Photo</h2>
+
+<mat-dialog-content>
+
+  <form fxLayout="column">
+
+    <div fxFlex="1 0 auto" fxLayout="row wrap" [ngStyle]="{'display':showViduo?'block':'none'}" >
+      <div fxFlex fxLayoutAlign="center center">
+        <video id="video" #videoElm playsinline autoplay></video>
+      </div>
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row wrap" [ngStyle]="{'display':showViduo?'none':'block'}">
+      <div fxFlex fxLayoutAlign="center center">
+        <canvas #canvas></canvas>
+        </div>
+      </div>
+
+</form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions >
+  <div fxFlex fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center center" class="margin-t-40">
+      <div fxFlex fxLayoutAlign="center center">
+        <button mat-raised-button class="padding-left-right-5" *ngIf="showViduo" type="button" color="accent" (click)="capture()">
+          Capture
+          <mat-icon class="s-22" style="margin-left:5px">camera</mat-icon>
+        </button>
+        <button mat-raised-button class="padding-left-right-5" *ngIf="!showViduo" type="button" color="accent" (click)="save()">
+          Save
+          <mat-icon class="s-22" style="margin-left:5px">save</mat-icon>
+        </button>
+        <button mat-raised-button class="padding-left-right-5" *ngIf="!showViduo" type="button" color="accent" (click)="camera()">
+          Camera
+          <mat-icon class="s-22" style="margin-left:5px">camera_alt</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row"  class="margin-t-40">
+      <div fxFlex fxLayoutAlign="end center">
+        <button mat-raised-button class="padding-left-right-5" type="button" (click)="close()">Close</button>
+      </div>
+      </div>
+    </div>
+    
+</mat-dialog-actions>
+

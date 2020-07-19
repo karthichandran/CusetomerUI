@@ -27,7 +27,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { CustomDateAdapter } from 'app/custom.date.adapter';
 import { DateAdapter } from '@angular/material/core';
-
+import { MatDialogModule } from '@angular/material/dialog';
 const appRoutes: Routes = [
   {
     path: '**',
@@ -74,7 +74,8 @@ const appRoutes: Routes = [
     // App modules
     LayoutModule,  
     CoreModule,   
-    ClientModule
+    ClientModule,
+    MatDialogModule
   ],
   providers: [
     { provide: DateAdapter, useClass: CustomDateAdapter}

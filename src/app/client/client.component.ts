@@ -12,6 +12,9 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
 import { isUndefined } from 'util';
+import * as fileSaver from 'file-saver';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ImageCaptureDialogComponent} from 'app/image-capture/image-capture.component';
 
 // tslint:disable-next-line:no-duplicate-imports
 //import { default as _rollupMoment } from 'moment';
@@ -70,7 +73,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   @ViewChildren(FusePerfectScrollbarDirective)
   fuseScrollbarDirectives: QueryList<FusePerfectScrollbarDirective>;
   panDoc: any = {};
-  constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService) {
+  constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService, private dialog: MatDialog) {
 
   }
 
@@ -81,7 +84,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       prospectPropertyID: [''],
       name: ['', Validators.required],
       addressPremises: [''],
-      adressLine1: [''],
+      adressLine1: ['', Validators.required],
       addressLine2: [''],
       city: ['', Validators.required],
       stateId: ['', Validators.required],
@@ -140,19 +143,6 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   showClient(eve, model: any) {
-    //if (this.customerform.value.prospectID > 0) {
-    //  if (this.customerform.value.traces == "yes" || this.customerform.value.isTracesRegistered)
-    //    this.customerform.value.isTracesRegistered = true;
-    //  else
-    //    this.customerform.value.isTracesRegistered = false;
-
-    //  if (this.customerform.value.form16b == 'yes')
-    //    this.customerform.value.allowForm16B = true;
-    //  else
-    //    this.customerform.value.allowForm16B = false;
-
-    //  this.clients[this.customerform.value.prospectID - 1] = _.clone(this.customerform.value);
-    //}
 
     this.currentProspectId = model.prospectID;
 
@@ -165,7 +155,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       model.form16b = "yes";
     else
       model.form16b = "no";
-    model.pinCode = isNaN(model.pinCode) ? model.pinCode.trim() : model.pinCode;
+    model.pinCode = isNaN(model.pinCode) ? "" : model.pinCode.trim();
     this.customerform.patchValue(model);
     this.loadPanDocument(model.pan);
   }
@@ -196,7 +186,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveOneCustomer(): void {
+  saveOneCustomer(showAddress:boolean): void {
     this.clearValidator();
     if (this.customerform.valid && this.propertyForm.valid) {
       let isNewEntry = true;
@@ -223,6 +213,11 @@ export class ClientComponent implements OnInit, OnDestroy {
         return;
       }
 
+      if (!this.isValid(this.customerform.value.panBlobID)) {
+        this.toastr.error("Please upload PAN Document");
+        return;
+      }
+
       var model = this.customerform.value;
       if (!this.isValid(model.prospectID) || model.prospectID == 0)
         model.prospectID = 0;
@@ -241,9 +236,16 @@ export class ClientComponent implements OnInit, OnDestroy {
       model.dateOfBirth = moment(model.dateOfBirth).local().format();
       if (this.clients.length > 0) {
         model.prospectPropertyID = this.propertyForm.value.prospectPropertyID;
-        this.clientService.saveOneCustomer(model, isNewEntry).subscribe(res => {
-          this.toastr.success("Customer is Saved");
+        this.clientService.saveOneCustomer(model, isNewEntry).subscribe(res => {          
+          this.clear();
           this.getPropertyAndCustomer(model.prospectPropertyID);
+          if (showAddress) {
+            this.ShowAddressDetails(model);
+          }
+          else {
+            this.toastr.success("Customer is Saved");
+            this.showAddressClearBtn = false;
+          }
         });
       }
       else {
@@ -253,16 +255,38 @@ export class ClientComponent implements OnInit, OnDestroy {
         vm.prospectPropertyDto = property;
         vm.prospectDto = [model];
         this.clientService.saveCustomer(vm).subscribe((res) => {
-          this.toastr.success("Thank you for sharing the details. Registration Successful");
           // this.getCustomer(res);
           this.clear();
           this.getPropertyAndCustomer(res);
+          if (showAddress) {
+            this.ShowAddressDetails(model);
+          }
+          else {
+            this.toastr.success("Customer is Saved");
+            this.showAddressClearBtn = false;
+          }
         });
       }
     }
     else {
       this.toastr.error("Please fill the all manditory fields");
     }
+  }
+
+  ShowAddressDetails(model: any) {
+    model.prospectID = 0;
+    model.name = '';
+    model.mobileNo = '';
+    model.emailID = '';
+    model.pan = '';
+    model.dateOfBirth = '';
+    model.form16b = 'yes';
+    model.tracesPassword = "";
+    model.alternateNumber = "";
+    model.isd = "+91";
+    this.customerform.reset();
+    this.customerform.patchValue(model);
+    this.showAddressClearBtn = true;
   }
 
   saveCustomer(): void {
@@ -465,66 +489,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   addCoClient() {
-    this.clearValidator();
-    var invalidList = _.filter(this.customerform.controls, function (item) {
-      return item.validator != null && item.value == "";
-    })
-
-    if (this.customerform.valid && invalidList.length == 0) {
-      this.showAddressClearBtn = true;
-      if (this.customerform.value.traces == "yes" || this.customerform.value.isTracesRegistered)
-        this.customerform.value.isTracesRegistered = true;
-      else
-        this.customerform.value.isTracesRegistered = false;
-
-      if (this.customerform.value.form16b == 'yes')
-        this.customerform.value.allowForm16B = true;
-      else
-        this.customerform.value.allowForm16B = false;;
-
-      if (this.customerform.value.traces == "yes") {
-        if (this.customerform.value.tracesPassword == "") {
-          this.toastr.error("Please enter the Traces password");
-          return;
-        }
-      }
-      this.customerform.value.prospectPropertyID = 0;
-      let cusID = this.customerform.value.prospectID;
-      if (!this.isValid(cusID) || this.clients.length == 0) {
-        this.customerform.value.prospectID = this.clients.length + 1;
-        this.clients.push(_.clone(this.customerform.value));
-      } else {
-        this.clients[cusID - 1] = _.clone(this.customerform.value);
-      }
-
-      let client = this.customerform.value;
-      client.prospectID = 0;
-      client.name = '';
-      client.mobileNo = '';
-      client.emailID = '';
-      client.pan = '';
-      client.dateOfBirth = '';
-      client.form16b = 'yes';
-      client.tracesPassword = "";
-      //client.customerAlias = "";
-      client.alternateNumber = "";
-      client.isd = "+91";
-      this.customerform.reset();
-      this.customerform.patchValue(client);
-
-      //To Reset control validators
-      var formcontrl = this.customerform;
-      _.forEach(['name', 'addressPremises', 'mobileNo', 'emailID', 'pan', 'dateOfBirth'], function (item) {
-        let control = formcontrl.get(item);
-        control.setErrors(null);
-      });
-
-      this.panDoc = {};
-    }
-    else {
-      this.toastr.error("Please fill the all manditory fields");
-      return false;
-    }
+    this.saveOneCustomer(true);
   }
   removeRestriction() {
     this.customerform.removeControl('completed');
@@ -644,6 +609,104 @@ export class ClientComponent implements OnInit, OnDestroy {
     this.ValidateAndCleanCustomer();
     this.showShareGrid = true;
     this.customerData = [... this.clients];
-
   }
+
+  downloadFile(blobId: any, name: string, status: any) {
+
+    this.clientService.downloadFiles(blobId).subscribe((response) => {
+
+      let fileType = name.split('.')[1];
+      let blobType = "";
+
+      if (fileType == 'pdf') {
+        blobType = 'application/pdf'
+      }
+      else if (fileType == 'jpg' || fileType == 'jpeg' || fileType == 'png') {
+        blobType = 'image/' + fileType;
+      }
+      else if (fileType == 'xls') {
+        blobType = 'application/vnd.ms-excel';
+      }
+      else if (fileType == 'xlsx') {
+        blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      }
+      else if (fileType == 'docx') {
+        blobType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      }
+      else if (fileType == 'ods') {
+        blobType = 'application/vnd.oasis.opendocument.spreadsheet';
+      }
+      else if (fileType == 'xls') {
+        blobType = 'application/msword';
+      }
+
+
+      // let blob: any = new Blob([response], { type: blobType });
+      let blob: any = new Blob([response], { type: blobType });
+
+      //This will open file in new browser tab
+
+      if (status == 'view') {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      } else {
+        // window.location.href = response.url;
+        fileSaver.saveAs(blob, name);
+      }
+    });
+  }
+
+  deleteFile(id: string, type: string) {
+    this.clientService.deleteFile(id).subscribe(() => {
+      this.toastr.success("FIle is deleted successfully");
+      if (type == "pan")
+        this.loadPanDocument(this.customerform.get('pan').value);
+     
+    });
+  }
+
+  openDialog(): void {
+
+    if (this.customerform.get('pan').value == "") {
+      this.toastr.warning("Please Fill the Pan number");
+      return;
+    } 
+
+    const dialogRef = this.dialog.open(ImageCaptureDialogComponent, {
+      hasBackdrop: false,
+      maxHeight: 650,
+      maxWidth: 1000,
+      width: "800px",
+      data: {
+        'premises': this.propertyList
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (!isUndefined(res)) {
+        let formData = new FormData();
+        let pan = this.customerform.get('pan').value;
+        let fileName = pan + ".png";
+        var fileOfBlob = new File([res], fileName);
+        formData.append(fileName, fileOfBlob);
+        this.panDoc.fileName = fileName;        
+        this.clientService.uploadPan(formData, pan).subscribe((eve) => {
+          if (eve.type == HttpEventType.Sent) {
+            this.toastr.success("File Uploaded successfully");
+          }
+          if (eve.type == HttpEventType.Response) {
+            this.customerform.get('panBlobID').setValue(eve.body);
+          }
+        },
+          (err) => { },
+          () => {
+            this.loadPanDocument(pan);
+          }
+        );
+      }
+      console.log('The dialog was closed');
+    });
+  }
+
 }

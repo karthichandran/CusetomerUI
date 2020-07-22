@@ -67,6 +67,13 @@ export class ImageCaptureDialogComponent implements OnInit {
     var file = new Blob([new Uint8Array(array)], { type: 'image/png' });
     //var formdata = new FormData();
     //formdata.append("myNewFileName", file);
+
+    // Close the flash 
+    let mediaStream = this.videoElement.nativeElement.srcObject;
+    let tracks = mediaStream.getTracks();
+    tracks.forEach(track => track.stop());
+
+    // return the file
     this.dialogRef.close(file);
   }
 
@@ -75,6 +82,9 @@ export class ImageCaptureDialogComponent implements OnInit {
   }
 
   close() {
+    let mediaStream = this.videoElement.nativeElement.srcObject;
+    let tracks = mediaStream.getTracks();
+    tracks.forEach(track => track.stop());
     this.dialogRef.close();
   }
 

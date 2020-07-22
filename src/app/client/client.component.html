@@ -75,11 +75,15 @@
                   <input matInput formControlName="pan" (keyup)="customerform.patchValue({pan: $event.target.value.toUpperCase()})" (blur)="loadCustomerByPan($event.target.value)" required>
 
                   <input hidden type="file" #panDocument accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
+                  <input hidden type="file" #mobileDocument  accept="image/*" capture (change)="uploadPan($event)" />
                   <div matSuffix style="display:flex;">
-                    <span  class="pan-upload" (click)="panUploadClick(panDocument)">
+                    <span class="pan-upload" (click)="panUploadClick(panDocument)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
                     </span>
-                    <span  class="pan-upload" (click)="openDialog()" style="cursor:pointer;">
+                    <span *ngIf="!isMobile" class="pan-upload" (click)="openDialog()" style="cursor:pointer;">
+                      <mat-icon class="s-22" style="margin-left:5px">add_a_photo</mat-icon>
+                    </span>
+                    <span *ngIf="isMobile" class="pan-upload mobile" (click)="openDialogInMobile(mobileDocument)" style="cursor:pointer;">
                       <mat-icon class="s-22" style="margin-left:5px">add_a_photo</mat-icon>
                     </span>
                   </div>
@@ -195,27 +199,26 @@
                 </div>
               </div>
             </div>
-            <div fxFlex="1 0 auto" fxLayout="row wrap">
+            <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column"  fxLayout.xs="column">
               <div fxFlex>
-                <div class="margin-tb-5" fxLayout="row wrap">
-                  <div fxLayout="row wrap">
-                    <label fxLayout class="radio-label">I/We have already registered in TRACES</label>
-                    <mat-radio-group fxLayout aria-label="Select an option" formControlName="traces" style="align-self:center;">
+                <div  fxLayout="row wrap">
+                  <div class="margin-tb-5" >
+                    <span class="radio-label">I/We have already registered in TRACES</span>
+                    <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:center;">
                       <mat-radio-button value="yes">Yes</mat-radio-button>
                       <mat-radio-button value="no">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
-                  <mat-form-field appearance="outline" fxFlex *ngIf="customerform.value.traces=='yes'">
+                  <mat-form-field appearance="outline"  *ngIf="customerform.value.traces=='yes'">
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="tracesPassword">
                     <mat-error>Password is required!</mat-error>
                   </mat-form-field>
                 </div>
               </div>
-              <div fxFlex style="align-self:center;">
+              <div fxFlex  fxLayoutAlign="end center">
                 <button mat-raised-button
                         class="add-product-button margin-tb-5 mt-24 mt-md-0  pink" style="float:right;" (click)="addCoClient()">
-
                   <span>Add Co Owner </span>
                   <mat-icon class="s-22" style="margin-left:5px">group</mat-icon>
                 </button>

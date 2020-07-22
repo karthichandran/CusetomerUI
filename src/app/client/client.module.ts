@@ -14,7 +14,8 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { ClientComponent } from 'app/client/client.component';
 import { GridModule } from '@fuse/components';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ImageCaptureDialogComponent} from 'app/image-capture/image-capture.component';
+import { ImageCaptureDialogComponent } from 'app/image-capture/image-capture.component';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 const routes = [
   {
     path: 'client',
@@ -41,7 +42,8 @@ const routes = [
     MatDatepickerModule,
     FuseSharedModule,
     GridModule,
-    MatDialogModule
+    MatDialogModule,
+    DeviceDetectorModule
    
   ], providers: []
 }

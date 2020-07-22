@@ -15,7 +15,7 @@ import { isUndefined } from 'util';
 import * as fileSaver from 'file-saver';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ImageCaptureDialogComponent} from 'app/image-capture/image-capture.component';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 // tslint:disable-next-line:no-duplicate-imports
 //import { default as _rollupMoment } from 'moment';
 //const moment = _rollupMoment || _moment;
@@ -68,12 +68,12 @@ export class ClientComponent implements OnInit, OnDestroy {
   reorderable: boolean = true;
   isd2way: any = "+91";
   currentProspectId: number;
-
+  isMobile: boolean = false;
   showShareGrid: boolean = false;
   @ViewChildren(FusePerfectScrollbarDirective)
   fuseScrollbarDirectives: QueryList<FusePerfectScrollbarDirective>;
   panDoc: any = {};
-  constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService, private dialog: MatDialog) {
+  constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService, private dialog: MatDialog, private deviceService: DeviceDetectorService) {
 
   }
 
@@ -115,6 +115,16 @@ export class ClientComponent implements OnInit, OnDestroy {
     this.customerData = [];
     this.getAllStates();
     this.getAllProperties();
+    this.checkDevice();
+  }
+
+  checkDevice() {
+    const isMobileDev = this.deviceService.isMobile();
+    const isTabletDev = this.deviceService.isTablet();
+    if (isMobileDev || isTabletDev)
+      this.isMobile = true;
+    else
+      this.isMobile = false;
   }
 
   clear() {
@@ -176,6 +186,13 @@ export class ClientComponent implements OnInit, OnDestroy {
     //  uploadBtn.dispatchEvent(new MouseEvent('click'));
     //else
     //  this.toastr.warning("Please delete the current document then Upload");
+  }
+
+  openDialogInMobile(browseBtn: Element) {
+    if (this.customerform.get('pan').value == "") {
+      this.toastr.warning("Please Fill the Pan then upload");
+    } else
+      browseBtn.dispatchEvent(new MouseEvent('click'));
   }
 
   getPropertyAndCustomer(prospectPropertyID:number) {
@@ -580,9 +597,10 @@ export class ClientComponent implements OnInit, OnDestroy {
       let pan = this.customerform.get('pan').value;
       this.clientService.uploadPan(formData, pan).subscribe((eve) => {
         if (eve.type == HttpEventType.Sent) {
-          this.toastr.success("File Uploaded successfully");
+         
         }
         if (eve.type == HttpEventType.Response) {
+          this.toastr.success("File Uploaded successfully");
           this.customerform.get('panBlobID').setValue(eve.body);
         }
       },
@@ -665,6 +683,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     });
   }
 
+  
   openDialog(): void {
 
     if (this.customerform.get('pan').value == "") {
@@ -693,9 +712,10 @@ export class ClientComponent implements OnInit, OnDestroy {
         this.panDoc.fileName = fileName;        
         this.clientService.uploadPan(formData, pan).subscribe((eve) => {
           if (eve.type == HttpEventType.Sent) {
-            this.toastr.success("File Uploaded successfully");
+           
           }
           if (eve.type == HttpEventType.Response) {
+            this.toastr.success("File Uploaded successfully");
             this.customerform.get('panBlobID').setValue(eve.body);
           }
         },

@@ -174,7 +174,7 @@
               </div>
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>D.O.B *</mat-label>
-                <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth" placeholder="DD-MMM-YYYY">
+                <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth" placeholder="DD-MM-YYYY">
                 <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
                 <mat-datepicker #birthDate></mat-datepicker>
               </mat-form-field>
@@ -188,11 +188,11 @@
               </mat-form-field>
 
             </div>
-            <div fxFlex="1 0 auto" fxLayout="row wrap">
+            <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column"  fxLayout.xs="column">
               <div fxFlex>
-                <div class="margin-tb-5">
-                  <span class="radio-label">I/We want REpro Services to download Form 16B</span>
-                  <mat-radio-group aria-label="Select an option" formControlName="form16b" style="align-self:center;">
+                <div class="margin-tb-5" fxLayout.sm="column"  fxLayout.xs="column">
+                  <span class="radio-label" style="align-self:end;">I/We want REpro Services to download Form 16B</span>
+                  <mat-radio-group aria-label="Select an option" formControlName="form16b" style="align-self:end;">
                     <mat-radio-button value="yes">Yes</mat-radio-button>
                     <mat-radio-button value="no">No</mat-radio-button>
                   </mat-radio-group>
@@ -202,9 +202,9 @@
             <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column"  fxLayout.xs="column">
               <div fxFlex>
                 <div  fxLayout="row wrap">
-                  <div class="margin-tb-5" >
+                  <div class="margin-tb-5"  fxLayout.sm="column" fxLayout.xs="column">
                     <span class="radio-label">I/We have already registered in TRACES</span>
-                    <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:center;">
+                    <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:end;">
                       <mat-radio-button value="yes">Yes</mat-radio-button>
                       <mat-radio-button value="no">No</mat-radio-button>
                     </mat-radio-group>
@@ -270,8 +270,8 @@
               <div class="h2 margin-t-20 section-title">REpro Service Fee</div>
               <div class="h3 ">For New bookings / No compliance cases</div>
 
-              <div fxFlex="1 0 auto" fxLayout="column" class="grid-table">
-                <div fxFlex="1 0 auto" fxLayout="row" class="header-row">
+              <div fxFlex="1 0 auto" fxLayout="column" class="grid-table" >
+                <div fxFlex="1 0 auto" fxLayout="row" class="header-row" fxLayoutGap="10px">
                   <div fxFlex>
                     <span>Particulars</span>
                   </div>
@@ -287,7 +287,7 @@
                     </span>
                   </div>
                 </div>
-                <div fxFlex="1 0 auto" fxLayout="row" class="odd-row">
+                <div fxFlex="1 0 auto" fxLayout="row" class="odd-row" fxLayoutGap="10px">
                   <div fxFlex>
                     <span>Compliance for one owner</span>
                   </div>
@@ -303,7 +303,7 @@
                     </span>
                   </div>
                 </div>
-                <div fxFlex="1 0 auto" fxLayout="row" class="even-row">
+                <div fxFlex="1 0 auto" fxLayout="row" class="even-row" fxLayoutGap="10px">
                   <div fxFlex>
                     <span>Compliance for 2 or more owners</span>
                   </div>
@@ -319,7 +319,7 @@
                     </span>
                   </div>
                 </div>
-                <div fxFlex="1 0 auto" fxLayout="row" class="odd-row">
+                <div fxFlex="1 0 auto" fxLayout="row" class="odd-row" fxLayoutGap="10px">
                   <div fxFlex>
                     <span>For one-time TDS compliance</span>
                   </div>
@@ -339,7 +339,7 @@
               <div class="h3 padding-t-10">For Old bookings who have complied partially and wants to opt for TDS compliance by REpro Services going forward</div>
 
               <div fxFlex="1 0 auto" fxLayout="column" class="grid-table">
-                <div fxFlex="1 0 auto" fxLayout="row" class="header-row">
+                <div fxFlex="1 0 auto" fxLayout="row" class="header-row" fxLayoutGap="7px">
                   <div fxFlex>
                     <span>Particulars</span>
                   </div>
@@ -357,7 +357,7 @@
                     </span>
                   </div>
                 </div>
-                <div fxFlex="1 0 auto" fxLayout="row" class="odd-row">
+                <div fxFlex="1 0 auto" fxLayout="row" class="odd-row" fxLayoutGap="7px">
                   <div fxFlex>
                     <span>Compliance for one owner</span>
                   </div>
@@ -373,7 +373,7 @@
                     </span>
                   </div>
                 </div>
-                <div fxFlex="1 0 auto" fxLayout="row" class="even-row">
+                <div fxFlex="1 0 auto" fxLayout="row" class="even-row" fxLayoutGap="7px">
                   <div fxFlex>
                     <span>Compliance for 2 or more owners</span>
                   </div>
@@ -405,9 +405,9 @@
                     <div fxFlex class="padding-tb-7">IFSC – HDFC0001036</div>
                   </div>
                 </div>
-                <div fxFlex>
+                <!--<div fxFlex>
                   <img height="150" width="150" src="assets/images/qr_code.png" />
-                </div>
+                </div>-->
               </div>
               <div fxFlex="1 0 auto" fxLayout="column">
 

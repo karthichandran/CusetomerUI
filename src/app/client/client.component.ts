@@ -101,7 +101,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       form16b: ['yes'],
       alternateNumber: [''],
       isd: ['+91'],
-      panBlobID: ['']
+      panBlobId: ['']
     });
     this.propertyForm = this._formBuilder.group({
       declarationDate: [new Date()],
@@ -230,7 +230,7 @@ export class ClientComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (!this.isValid(this.customerform.value.panBlobID)) {
+      if (!this.isValid(this.customerform.value.panBlobId)) {
         this.toastr.error("Please upload PAN Document");
         return;
       }
@@ -250,7 +250,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       else
         model.allowForm16B = false;
 
-      model.dateOfBirth = moment(model.dateOfBirth).local().format();
+      model.dateOfBirth = moment(model.dateOfBirth).local().format("YYYY-MM-DD");
       if (this.clients.length > 0) {
         model.prospectPropertyID = this.propertyForm.value.prospectPropertyID;
         this.clientService.saveOneCustomer(model, isNewEntry).subscribe(res => {          
@@ -266,7 +266,7 @@ export class ClientComponent implements OnInit, OnDestroy {
         });
       }
       else {
-        let property = { 'propertyID': this.propertyForm.value.propertyID, 'unitNo': this.propertyForm.value.unitNo, 'declarationDate': this.propertyForm.value.declarationDate, 'prospectPropertyID': 0 };
+        let property = { 'propertyID': this.propertyForm.value.propertyID, 'unitNo': this.propertyForm.value.unitNo, 'declarationDate': moment(this.propertyForm.value.declarationDate).local().format("YYYY-MM-DD"), 'prospectPropertyID': 0 };
         let vm: any = {};
         model.prospectPropertyID = 0;
         vm.prospectPropertyDto = property;
@@ -464,7 +464,7 @@ export class ClientComponent implements OnInit, OnDestroy {
 
     _.forEach(this.clients, o => {
       o.prospectPropertyID = 0;
-      o.dateOfBirth = moment(o.dateOfBirth).local().format();
+      o.dateOfBirth = moment(o.dateOfBirth).local().format("YYYY-MM-DD");
     })
 
     return true;
@@ -601,7 +601,7 @@ export class ClientComponent implements OnInit, OnDestroy {
         }
         if (eve.type == HttpEventType.Response) {
           this.toastr.success("File Uploaded successfully");
-          this.customerform.get('panBlobID').setValue(eve.body);
+          this.customerform.get('panBlobId').setValue(eve.body);
         }
       },
         (err) => { },
@@ -716,7 +716,7 @@ export class ClientComponent implements OnInit, OnDestroy {
           }
           if (eve.type == HttpEventType.Response) {
             this.toastr.success("File Uploaded successfully");
-            this.customerform.get('panBlobID').setValue(eve.body);
+            this.customerform.get('panBlobId').setValue(eve.body);
           }
         },
           (err) => { },

@@ -31,11 +31,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 const appRoutes: Routes = [
   {
     path: '**',
-    redirectTo: 'client'
+    redirectTo: 'declaration',
   }
 ];
-
-
 
 @NgModule({
   declarations: [
@@ -47,7 +45,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
    // ApiAuthorizationModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     BrowserAnimationsModule,
     ModalModule.forRoot(),
 

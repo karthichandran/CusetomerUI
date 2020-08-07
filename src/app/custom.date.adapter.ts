@@ -28,7 +28,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
 
     //const dtf = new Intl.DateTimeFormat(this.locale, displayFormat);
    // return dtf.format(date).replace(/[\u200e\u200f]/g, '');
-    return _moment(date).format("DD-MMM-YYYY");
+    return _moment(date).format("DD-MM-YYYY");
   }
 
 }

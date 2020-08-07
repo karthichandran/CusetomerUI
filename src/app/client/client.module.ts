@@ -18,7 +18,7 @@ import { ImageCaptureDialogComponent } from 'app/image-capture/image-capture.com
 import { DeviceDetectorModule } from 'ngx-device-detector';
 const routes = [
   {
-    path: 'client',
+    path: 'declaration',
     component: ClientComponent
   }
 ];

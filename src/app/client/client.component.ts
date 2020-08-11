@@ -73,6 +73,8 @@ export class ClientComponent implements OnInit, OnDestroy {
   @ViewChildren(FusePerfectScrollbarDirective)
   fuseScrollbarDirectives: QueryList<FusePerfectScrollbarDirective>;
   panDoc: any = {};
+  @ViewChild('shareGrid') sharegridRef: ElementRef;
+
   constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService, private dialog: MatDialog, private deviceService: DeviceDetectorService) {
 
   }
@@ -189,7 +191,8 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   openDialogInMobile(browseBtn: Element) {
-    if (this.customerform.get('pan').value == "") {
+    let isValid = new RegExp('^[A-Za-z]{5}[0-9]{4}[A-Za-z]$').test(this.customerform.get('pan').value);
+    if (!isValid) {
       this.toastr.warning("Please Fill the Pan then upload");
     } else
       browseBtn.dispatchEvent(new MouseEvent('click'));
@@ -320,6 +323,17 @@ export class ClientComponent implements OnInit, OnDestroy {
     }
 
     if (!this.validateSharePercentage()) {
+      this.sharegridRef.nativeElement.scrollIntoView();
+      let rows = this.sharegridRef.nativeElement.querySelectorAll(".datatable-row-wrapper");
+      let rowCells = rows[0].querySelectorAll(".datatable-body-cell-label");
+      let cell = rowCells[1].querySelectorAll(".label");
+      cell[0].click();
+      setTimeout(() => {
+        rowCells = rows[0].querySelectorAll(".datatable-body-cell-label");
+        let textbox = rowCells[1].querySelectorAll(".grid-textbox");
+        textbox[0].focus();
+      }, 500);
+      
       return;
     }
 
@@ -543,7 +557,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
   getAllProperties() {
     this.clientService.getPropertyList().subscribe((response) => {
-      this.propertyList = response;
+      this.propertyList = _.filter(response, o => { return o.isActive == null || o.isActive == true; });;
     });
   }
 
@@ -685,8 +699,8 @@ export class ClientComponent implements OnInit, OnDestroy {
 
   
   openDialog(): void {
-
-    if (this.customerform.get('pan').value == "") {
+    let isValid = new RegExp('^[A-Za-z]{5}[0-9]{4}[A-Za-z]$').test(this.customerform.get('pan').value);
+    if (!isValid) {
       this.toastr.warning("Please Fill the Pan number");
       return;
     } 
@@ -695,11 +709,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       hasBackdrop: false,
       maxHeight: 650,
       maxWidth: 1000,
-      width: "800px",
-      data: {
-        'premises': this.propertyList
-      }
-
+      width: "800px"  
     });
 
     dialogRef.afterClosed().subscribe((res) => {

@@ -265,8 +265,9 @@
             </div>
 
             <div fxLayout="column">
-              <grid [dataSet]="customerData" [gridColDef]="customerColumnDef"></grid>
-
+              <div #shareGrid>
+                <grid  [dataSet]="customerData" [gridColDef]="customerColumnDef"></grid>
+              </div>
               <div class="h2 margin-t-20 section-title">REpro Service Fee</div>
               <div class="h3 ">For New bookings / No compliance cases</div>
 

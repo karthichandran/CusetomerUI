@@ -266,6 +266,8 @@ export class ClientComponent implements OnInit, OnDestroy {
             this.toastr.success("Customer is Saved");
             this.showAddressClearBtn = false;
           }
+        }, (e) => {
+            this.toastr.error(e.error.error);
         });
       }
       else {
@@ -285,6 +287,8 @@ export class ClientComponent implements OnInit, OnDestroy {
             this.toastr.success("Customer is Saved");
             this.showAddressClearBtn = false;
           }
+        }, (e) => {
+            this.toastr.error(e.error.error);
         });
       }
     }

@@ -29,12 +29,14 @@ export class ImageCaptureDialogComponent implements OnInit {
   }
   startCamera() {
     if (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
-      navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch(this.handleError);
+      navigator.mediaDevices.getUserMedia(this.constraints).then(this.attachVideo.bind(this)).catch((e) => { this.handleError(e,this.dialogRef); });
     } else {
       alert('Sorry, camera not available.');
+      this.dialogRef.close("");
     }
   }
-  handleError(error) {
+  handleError(error,dialogRef) {
+    dialogRef.close("not Supported");
     console.log('Error: ', error);
   }
   attachVideo(stream) {
@@ -83,9 +85,11 @@ export class ImageCaptureDialogComponent implements OnInit {
 
   close() {
     let mediaStream = this.videoElement.nativeElement.srcObject;
-    let tracks = mediaStream.getTracks();
-    tracks.forEach(track => track.stop());
-    this.dialogRef.close();
+    if (mediaStream != null) {
+      let tracks = mediaStream.getTracks();
+      tracks.forEach(track => track.stop());
+    }
+    this.dialogRef.close("");
   }
 
 }

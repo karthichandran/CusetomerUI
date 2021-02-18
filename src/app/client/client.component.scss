@@ -1,30 +1,6 @@
 @import "@fuse/scss/fuse";
 :host {
 
-  .mat-radio-button {
-    margin: 15px 12px;
-  }
-
-  .margin-tb-5 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-
-  .margin-b-10 {
-    margin-bottom: 10px;
-  }
-
-  .radio-label {
-    align-self: center;
-  }
-
-  mat-form-field {
-    margin: 0 5px;
-  }
-
-  .add-file-button {
-    margin-bottom: 20px;
-  }
 
   .sellers {
     border: solid 1px #ebeff3;
@@ -152,7 +128,8 @@
 .Address-clear{
     margin-bottom:25px;
     margin-left:20px;
-
+    height:40px;
+    padding:5px 0 0 0;
 }
 
 .uploaded-file-name{
@@ -240,4 +217,92 @@ cursor:pointer;
 }
 .yellow {
   background-color: #e6c810;
+}
+.pan-upload {
+  padding: 10px 20px 0 20px;
+  border: 1px solid #dad6d6;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  background: #039be5bf;
+  font-weight: 600;
+}
+.pan-upload:hover {
+  background: #039be5;
+}
+
+.pan-upload > label {
+  vertical-align: top;
+  padding-right: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+.pan-upload > mat-icon {
+  color: #fff;
+}
+
+
+
+.mat-tab-header {
+  /* background-color: #ff4081;*/
+  /* background-color: #AEEA00;*/
+  background-color: #f98e32;
+}
+
+.mat-tab-label {
+   color: #fff !important;
+  /*color: #2E7D32 !important;*/
+  font-size: 14pt;
+}
+
+.mat-focus-indicator :before{
+  border-color: #fff !important;
+}
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  /*background: #2E7D32 !important;*/
+  background: #9c4d09 !important;
+  height: 5px;
+} 
+
+
+.mat-radio-button {
+  margin: 15px 12px;
+}
+
+.margin-tb-5 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.margin-b-10 {
+  margin-bottom: 10px;
+}
+
+.radio-label {
+  align-self: center;
+}
+
+mat-form-field {
+  margin: 0 5px;
+}
+
+.add-file-button {
+  margin-bottom: 20px;
+}
+.label-single {
+  padding: 10px;
+  margin-bottom: 10px;
+  float: right;
+  font-weight: 500;
+}
+
+@media (max-width: 1000px) {
+
+  .label-single {
+    padding: 10px;
+    margin-bottom: 10px;
+    float: left;
+    font-weight: 500;
+  }
 }

@@ -216,14 +216,15 @@ export class ClientComponent implements OnInit, OnDestroy {
       item.ShowMoreCoOwnerOption = true;
     }
     var existItem = _.clone(this.coOwnersForms[this.coOwnersForms.length - 1].owner);
+    item.owner.get("addressPremises").setValue(existItem.value.adressLine1);
     item.owner.get("adressLine1").setValue(existItem.value.adressLine1);
     item.owner.get("addressLine2").setValue(existItem.value.addressLine2);
     item.owner.get("city").setValue(existItem.value.city);
     item.owner.get("stateId").setValue(existItem.value.stateId);
     item.owner.get("pinCode").setValue(existItem.value.pinCode);
-    item.owner.get("isTracesRegistered").setValue(existItem.value.isTracesRegistered);
-    item.owner.get("traces").setValue(existItem.value.traces);
-    item.owner.get("tracesPassword").setValue(existItem.value.tracesPassword);
+    //item.owner.get("isTracesRegistered").setValue(existItem.value.isTracesRegistered);
+    //item.owner.get("traces").setValue(existItem.value.traces);
+    //item.owner.get("tracesPassword").setValue(existItem.value.tracesPassword);
     item.owner.get("allowForm16B").setValue(existItem.value.allowForm16B);
     item.owner.get("form16b").setValue(existItem.value.form16b);
     item.showAddressClearBtn = true;

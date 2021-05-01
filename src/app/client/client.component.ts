@@ -216,7 +216,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       item.ShowMoreCoOwnerOption = true;
     }
     var existItem = _.clone(this.coOwnersForms[this.coOwnersForms.length - 1].owner);
-    item.owner.get("addressPremises").setValue(existItem.value.adressLine1);
+    item.owner.get("addressPremises").setValue(existItem.value.addressPremises);
     item.owner.get("adressLine1").setValue(existItem.value.adressLine1);
     item.owner.get("addressLine2").setValue(existItem.value.addressLine2);
     item.owner.get("city").setValue(existItem.value.city);
@@ -431,7 +431,12 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   saveCustomer(): void {
-  
+    this.clients = [];
+    let share = (100 / this.coOwnersForms.length).toFixed(2);
+    _.forEach(this.coOwnersForms, obj => {
+      obj.owner.value.share = share;
+      this.clients.push(obj.owner.value);
+    });
     //this.clearValidator();
     //if (this.customerform.valid && this.propertyForm.valid) {
     //  let isNewEntry = true;
@@ -527,6 +532,8 @@ export class ClientComponent implements OnInit, OnDestroy {
     this.clientService.saveCustomer(vm).subscribe((res) => {
       this.toastr.success("Thanks for submitting your declaration form. We assure you our best services at all times.");     
       this.clear();
+    }, (e) => {
+        this.toastr.error(e.error.error);
     });
   }
 
@@ -636,7 +643,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       toastr.error("Please enter valid share value");
       return false;
     }
-    if (share != 100 && share > 0) {
+    if (Math.round(share) != 100 && share > 0) {
       this.toastr.error("Sum of share % must be equal to 100");
       return false;
     }
@@ -1082,6 +1089,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     if (this.selectedTab == this.coOwnersForms.length) {
      
       if (this.clients.length != this.coOwnersForms.length) {
+
         this.showGird = false;
         this.SetupShareGrid();
       }

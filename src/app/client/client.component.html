@@ -124,7 +124,7 @@
                       </div>
                       <div fxFlex fxHide.xs >
                         <mat-form-field appearance="outline" fxFlex>
-                          <input matInput formControlName="addressPremises">
+                          <input matInput formControlName="addressPremises" maxlength="99">
                         </mat-form-field>
                       </div>
                       <div fxFlex fxHide.xs style="align-self:end;margin-top:5px;"  fxLayoutAlign="first center">
@@ -134,7 +134,7 @@
                       </div>
                       <div fxFlex fxHide.gt-xs fxLayout="column" > 
                         <mat-form-field fxFlex  appearance="outline" >
-                          <input matInput formControlName="addressPremises">
+                          <input matInput formControlName="addressPremises" maxlength="99">
                         </mat-form-field>
                         <div fxFlex >
                           <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()" color="accent" *ngIf="form.showAddressClearBtn">
@@ -151,7 +151,7 @@
                         <span class="label-single">Flat/Door/Block&nbsp;No&nbsp; * : </span>
                       </div>
                       <mat-form-field appearance="outline" fxFlex>
-                        <input matInput formControlName="adressLine1" required>
+                        <input matInput formControlName="adressLine1" required maxlength="99">
                         <mat-error>Flat/Door/Block No is required!</mat-error>
                       </mat-form-field>
                       <div fxFlex.gt-sm>
@@ -162,7 +162,7 @@
                         <label class="label-single">Road/Street/Lane : </label>
                       </div>
                       <mat-form-field appearance="outline" fxFlex>
-                        <input matInput formControlName="addressLine2">
+                        <input matInput formControlName="addressLine2" maxlength="99">
                       </mat-form-field>
                       <div fxFlex.gt-sm>
                       </div>
@@ -172,7 +172,7 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>City/District </mat-label>
-                        <input matInput formControlName="city" required>
+                        <input matInput formControlName="city" required maxlength="50">
                         <mat-error>City/District is required!</mat-error>
                       </mat-form-field>
 
@@ -188,7 +188,7 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>PIN Code</mat-label>
-                        <input matInput type="text" formControlName="pinCode" required>
+                        <input matInput type="text" formControlName="pinCode" required maxlength="10">
                         <mat-error>PIN Code is required!</mat-error>
                       </mat-form-field>
 
@@ -233,7 +233,7 @@
 
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Email</mat-label>
-                          <input type="email" matInput formControlName="emailID" required>
+                          <input type="email" matInput formControlName="emailID" required maxlength="50">
                           <mat-error>Email is required!</mat-error>
                         </mat-form-field>
                         <div  fxFlex.gt-sm></div>

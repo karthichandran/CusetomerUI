@@ -45,15 +45,27 @@
                 <mat-error>Declaration Date is required!</mat-error>
               </mat-form-field>
               <div fxLayout="column" fxFlex>
+                <!--<mat-form-field class="selection-fix" appearance="outline" fxFlex>
+      <mat-label>Select the project</mat-label>
+      <mat-select formControlName="propertyID" required>
+        <mat-option *ngFor="let option of propertyList" [value]="option.propertyID">
+          {{option.addressPremises}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Property is required!</mat-error>
+    </mat-form-field>-->
                 <mat-form-field class="selection-fix" appearance="outline" fxFlex>
                   <mat-label>Select the project</mat-label>
-                  <mat-select formControlName="propertyID" required>
-                    <mat-option *ngFor="let option of propertyList" [value]="option.propertyID">
+                  <mat-select formControlName="propertyID" required #PropertyFilterSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="propertyFilterCtrl"  placeholderLabel="Search"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredProperty| async" [value]="option.propertyID">
                       {{option.addressPremises}}
                     </mat-option>
                   </mat-select>
                   <mat-error>Property is required!</mat-error>
-                </mat-form-field>               
+                </mat-form-field>
               </div>
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Unit No</mat-label>

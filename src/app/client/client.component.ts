@@ -13,12 +13,15 @@ import { MatStepper } from '@angular/material/stepper';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
-import { isUndefined } from 'util';
 import * as fileSaver from 'file-saver';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ImageCaptureDialogComponent} from 'app/image-capture/image-capture.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ThemePalette } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
+import { takeUntil } from 'rxjs/operators';
 // tslint:disable-next-line:no-duplicate-imports
 //import { default as _rollupMoment } from 'moment';
 //const moment = _rollupMoment || _moment;
@@ -88,6 +91,14 @@ export class ClientComponent implements OnInit, OnDestroy {
   tabBackgroundColor: string = "#ff4081";
   @ViewChild('shareGrid') sharegridRef: ElementRef;
   @ViewChild('nameField') nameFieldRef: ElementRef;
+
+  //Property Filter
+  public propertyFilterCtrl: FormControl = new FormControl();
+  @ViewChild('PropertyFilterSelect', { static: true }) PropertyFilterSelect: MatSelect;
+  /** Subject that emits when the component has been destroyed. */
+  protected _onDestroy = new Subject<void>();
+  public filteredProperty: ReplaySubject<any[]> = new ReplaySubject<any[]>();
+
   constructor(private _formBuilder: FormBuilder, private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService, private dialog: MatDialog, private deviceService: DeviceDetectorService) {
 
   }
@@ -174,6 +185,13 @@ export class ClientComponent implements OnInit, OnDestroy {
     this.getAllStates();
     this.getAllProperties();
     this.checkDevice();
+
+    //initiate property filter
+    //this.filteredProperty.next(this.propertyList.slice());
+    this.propertyFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterProperty();
+      });
   }
 
   checkDevice() {
@@ -195,6 +213,8 @@ export class ClientComponent implements OnInit, OnDestroy {
 
   
   ngOnDestroy(): void {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
   addTab() {
     let item = {
@@ -350,64 +370,7 @@ export class ClientComponent implements OnInit, OnDestroy {
      // this.customerData = [... this.clients];
       this.clients = [... this.clients];
       if(showAddress)
-      this.ShowAddressDetails(model);
-        // let property = { 'propertyID': this.propertyForm.value.propertyID, 'unitNo': this.propertyForm.value.unitNo, 'declarationDate': moment(this.propertyForm.value.declarationDate).local().format("YYYY-MM-DD"), 'prospectPropertyID': 0 };
-        //let vm: any = {};
-        //model.prospectPropertyID = 0;
-        //vm.prospectPropertyDto = property;
-        //vm.prospectDto = [model];
-        //this.clientService.saveCustomer(vm).subscribe((res) => {
-        //  // this.getCustomer(res);
-        //  this.clear();
-        //  this.getPropertyAndCustomer(res);
-        //  if (showAddress) {
-        //    this.ShowAddressDetails(model);
-        //  }
-        //  else {
-        //    this.toastr.success("Customer is Saved");
-        //    this.showAddressClearBtn = false;
-        //  }
-        //}, (e) => {
-        //    this.toastr.error(e.error.error);
-        //});
-
-      //if (this.clients.length > 0) {
-      //  model.prospectPropertyID = this.propertyForm.value.prospectPropertyID;
-      //  this.clientService.saveOneCustomer(model, isNewEntry).subscribe(res => {          
-      //    this.clear();
-      //    this.getPropertyAndCustomer(model.prospectPropertyID);
-      //    if (showAddress) {
-      //      this.ShowAddressDetails(model);
-      //    }
-      //    else {
-      //      this.toastr.success("Customer is Saved");
-      //      this.showAddressClearBtn = false;
-      //    }
-      //  }, (e) => {
-      //      this.toastr.error(e.error.error);
-      //  });
-      //}
-      //else {
-      //  let property = { 'propertyID': this.propertyForm.value.propertyID, 'unitNo': this.propertyForm.value.unitNo, 'declarationDate': moment(this.propertyForm.value.declarationDate).local().format("YYYY-MM-DD"), 'prospectPropertyID': 0 };
-      //  let vm: any = {};
-      //  model.prospectPropertyID = 0;
-      //  vm.prospectPropertyDto = property;
-      //  vm.prospectDto = [model];
-      //  this.clientService.saveCustomer(vm).subscribe((res) => {
-      //    // this.getCustomer(res);
-      //    this.clear();
-      //    this.getPropertyAndCustomer(res);
-      //    if (showAddress) {
-      //      this.ShowAddressDetails(model);
-      //    }
-      //    else {
-      //      this.toastr.success("Customer is Saved");
-      //      this.showAddressClearBtn = false;
-      //    }
-      //  }, (e) => {
-      //      this.toastr.error(e.error.error);
-      //  });
-      //}
+      this.ShowAddressDetails(model);       
     }
     else {
       this.toastr.error("Please fill the all manditory fields");
@@ -437,71 +400,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       obj.owner.value.share = share;
       this.clients.push(obj.owner.value);
     });
-    //this.clearValidator();
-    //if (this.customerform.valid && this.propertyForm.valid) {
-    //  let isNewEntry = true;
-    //  var invalidList = _.filter(this.customerform.controls, function (item) {
-    //    return item.validator != null && item.value == "";
-    //  })
-    //  if (invalidList.length == 0) {
-    //    let currentCustomer = this.customerform.value;
-
-    //    if (currentCustomer.traces == "yes") {
-    //      if (currentCustomer.tracesPassword == "") {
-    //        this.toastr.error("Please enter the Traces password");
-    //        return;
-    //      }
-    //    }
-
-    //  }
-    //  else {
-    //    Object.keys(this.customerform.controls).forEach(field => {
-    //      const control = this.customerform.get(field);
-    //      control.markAsTouched({ onlySelf: true });
-    //    });
-    //    this.toastr.error("Please fill the all manditory fields");
-    //    return;
-    //  }
-
-      ////Note : Please Enable on complete
-      //if (!this.isValid(this.customerform.value.panBlobId)) {
-      //  this.toastr.error("Please upload PAN Document");
-      //  return;
-      //}
-
-      //var model = this.customerform.value;
-      //if (!this.isValid(model.prospectID) || model.prospectID == 0)
-      //  model.prospectID = 0;
-      //else
-      //  isNewEntry = false;
-
-      //if (model.traces == "yes" || model.isTracesRegistered)
-      //  model.isTracesRegistered = true;
-      //else
-      //  model.isTracesRegistered = false;
-
-      //if (model.form16b == 'yes')
-      //  model.allowForm16B = true;
-      //else
-      //  model.allowForm16B = false;
-
-      //model.dateOfBirth = moment(model.dateOfBirth).local().format("YYYY-MM-DD");
-    //}
-    //else {
-    //  this.toastr.error("Please fill the all manditory fields");
-    //}
-
-    //var model = this.customerform.value;
-    //if (model.prospectID == 0) {
-    //  model.prospectID = this.clients.length + 1;
-    //  this.clients.push(model);
-    //}
-
-    //if (this.clients.length == 1) {
-    //  this.clients[0].share = 100;
-    //}   
-    //this.clients = [...this.clients];
-
+   
     if (!this.validateSharePercentage()) {
       this.SetupShareGrid();
       return;
@@ -562,7 +461,8 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   isValid(param: any) {
-    return (param != "" && param != null && !isUndefined(param))
+   // return (param != "" && param != null && !isUndefined(param))
+    return (param != "" && param != null && param!=undefined)
   }
 
   ValidateAndCleanCustomer(): boolean {
@@ -830,7 +730,8 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
   getAllProperties() {
     this.clientService.getPropertyList().subscribe((response) => {
-      this.propertyList = _.filter(response, o => { return o.isActive == null || o.isActive == true; });;
+      this.propertyList = _.filter(response, o => { return o.isActive == null || o.isActive == true; });
+      this.filteredProperty.next(this.propertyList.slice());
     });
   }
 
@@ -981,7 +882,7 @@ export class ClientComponent implements OnInit, OnDestroy {
         return;
       }
         
-      if (!isUndefined(res)) {
+      if (res!=undefined) {
         let formData = new FormData();
         let pan = this.coOwnersForms[this.currentCustomer].owner.get('pan').value;
         let fileName = pan + ".png";
@@ -1094,5 +995,28 @@ export class ClientComponent implements OnInit, OnDestroy {
         this.SetupShareGrid();
       }
     }
+  }
+
+
+  //property Filter functionality
+  protected filterProperty() {
+    if (!this.propertyList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.propertyFilterCtrl.value;
+    if (!search) {
+      this.filteredProperty.next(this.propertyList.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredProperty.next(this.filterProFun(search));
+  }
+
+  filterProFun(search) {
+    var list = this.propertyList.filter(prop => prop.addressPremises.toLowerCase().indexOf(search) > -1);
+    return list;
   }
 }

@@ -15,8 +15,8 @@ import { ClientComponent } from 'app/client/client.component';
 import { GridModule } from '@fuse/components';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ImageCaptureDialogComponent } from 'app/image-capture/image-capture.component';
-import { DeviceDetectorModule } from 'ngx-device-detector';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 const routes = [
   {
     path: 'declaration',
@@ -44,10 +44,9 @@ const routes = [
     FuseSharedModule,
     GridModule,
     MatDialogModule,
-    DeviceDetectorModule,
-    MatAutocompleteModule
+    NgxMatSelectSearchModule
    
-  ], providers: []
+  ], providers: [ DeviceDetectorService]
 }
 )
 export class ClientModule {

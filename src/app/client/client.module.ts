@@ -16,6 +16,7 @@ import { GridModule } from '@fuse/components';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ImageCaptureDialogComponent } from 'app/image-capture/image-capture.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 const routes = [
   {
     path: 'declaration',
@@ -43,7 +44,8 @@ const routes = [
     FuseSharedModule,
     GridModule,
     MatDialogModule,
-    DeviceDetectorModule
+    DeviceDetectorModule,
+    MatAutocompleteModule
    
   ], providers: []
 }

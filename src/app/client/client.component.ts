@@ -60,7 +60,6 @@ export class ClientComponent implements OnInit, OnDestroy {
   states: any[] = [];
   form16Options: any[] = [{ 'id': 1, 'description': 'Yes' }, { 'id': 0, 'description': 'No' }];
   paymentMethods: any[] = [{ 'paymentMethodID': 1, 'paymentMethod': 'Lumpsum' }, { 'paymentMethodID': 2, 'paymentMethod': 'per Transaction' }];
-  statusDDl: any[] = [{ 'id': 1, 'description': 'Saved' }, { 'id': 2, 'description': 'Submitted' }, { 'id': 3, 'description': 'Cancelled' }, { 'id': 4, 'description': 'Assigned' }, { 'id': 5, 'description': 'Blocked' }, { 'id': 6, 'description': 'Released' }];
   rowData: any[] = [];
   customerData: any = [];
   customerColumnDef: any[] = [];
@@ -108,12 +107,12 @@ export class ClientComponent implements OnInit, OnDestroy {
       prospectPropertyID: [''],
       name: ['', Validators.required],
       addressPremises: [''],
-      adressLine1: ['', Validators.required],
+      adressLine1: [''],
       addressLine2: [''],
-      city: ['', Validators.required],
-      stateId: ['', Validators.required],
-      pinCode: ['', Validators.compose([Validators.required, this.pinCodeValidator(), Validators.maxLength(10)])],
-      pan: ['', Validators.compose([Validators.required, this.panValidator(), Validators.maxLength(10)])],
+      city: [''],
+      stateId: [''],
+      pinCode: ['', Validators.compose([ this.pinCodeValidator(), Validators.maxLength(10)])],
+       pan: ['', Validators.compose([Validators.required, this.panValidator(), Validators.maxLength(10)])],
       emailID: ['', Validators.email],
       mobileNo: ['', Validators.compose([Validators.required, , Validators.maxLength(15)])],
       dateOfBirth: ['', Validators.required],
@@ -126,7 +125,8 @@ export class ClientComponent implements OnInit, OnDestroy {
       alternateNumber: [''],
       isd: ['+91'],
       panBlobId: [''],
-      label: ['Owner']
+      label: ['Owner'],
+      incomeTaxPassword:['', Validators.required]
     });
   }
 
@@ -137,12 +137,12 @@ export class ClientComponent implements OnInit, OnDestroy {
       prospectPropertyID: [''],
       name: ['', Validators.required],
       addressPremises: [''],
-      adressLine1: ['', Validators.required],
+      adressLine1: [''],
       addressLine2: [''],
-      city: ['', Validators.required],
-      stateId: ['', Validators.required],
-      pinCode: ['', Validators.compose([Validators.required, this.pinCodeValidator(), Validators.maxLength(10)])],
-      pan: ['', Validators.compose([Validators.required, this.panValidator(), Validators.maxLength(10)])],
+      city: [''],
+      stateId: [''],
+      pinCode: ['', Validators.compose([ this.pinCodeValidator(), Validators.maxLength(10)])],
+       pan: ['', Validators.compose([Validators.required, this.panValidator(), Validators.maxLength(10)])],
       emailID: ['', Validators.email],
       mobileNo: ['', Validators.compose([Validators.required, , Validators.maxLength(15)])],
       dateOfBirth: ['', Validators.required],
@@ -155,7 +155,8 @@ export class ClientComponent implements OnInit, OnDestroy {
       alternateNumber: [''],
       isd: ['+91'],
       panBlobId: [''],
-      label: ['Owner']
+      label: ['Owner'],
+      incomeTaxPassword:['', Validators.required]
     });
     let item = {
       'label': 'Customer',
@@ -579,9 +580,9 @@ export class ClientComponent implements OnInit, OnDestroy {
     //});
     if (item.valid && this.propertyForm.valid) {
 
-      var invalidList = _.filter(item.controls, function (item) {
-        return item.validator != null && item.value == "";
-      })
+      var invalidList = _.filter(item.controls, function (ctrl,key) {
+        return ctrl.validator != null && ctrl.value == "";
+      });
       if (invalidList.length == 0) {
         let currentCustomer = item.value;
 
@@ -703,6 +704,8 @@ export class ClientComponent implements OnInit, OnDestroy {
     item.get("alternateNumber").clearValidators();
     item.get("adressLine1").clearValidators();
     item.get("addressLine2").clearValidators();
+    item.get("city").clearValidators();
+    item.get("pinCode").clearValidators();
     item.get("isTracesRegistered").clearValidators();
     item.get("tracesPassword").clearValidators();
     item.get("traces").clearValidators();
@@ -710,6 +713,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     item.get("isd").clearValidators();
     item.get("prospectID").clearValidators();
     item.get("allowForm16B").clearValidators();
+    item.get("incomeTaxPassword").clearValidators();
   }
 
   clearAddress(): void {

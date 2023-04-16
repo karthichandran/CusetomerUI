@@ -7,16 +7,14 @@
   <div class="center">
 
     <!-- HEADER -->
-    <div class="header accent"
-         fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
 
       <!-- APP TITLE -->
       <div fxLayout="row" fxLayoutAlign="start center">
         <div class="logo">
           <img class="logo-icon" src="assets/images/logos/repro_logo.png" style="height:50px;width:50px;">
         </div>
-        <div fxLayout="column" fxLayoutAlign="start start"
-             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+        <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
           <div class="h2">
             <span style="font-weight: 800;padding-left: 15px;">REpro Services</span>
           </div>
@@ -39,7 +37,8 @@
             <div fxFlex="1 0 auto" fxLayout="row wrap">
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Declaration Date</mat-label>
-                <input #declaration matInput [matDatepicker]="declarationDate" formControlName="declarationDate" required>
+                <input #declaration matInput [matDatepicker]="declarationDate" formControlName="declarationDate"
+                  required>
                 <mat-datepicker-toggle matSuffix [for]="declarationDate"></mat-datepicker-toggle>
                 <mat-datepicker #declarationDate></mat-datepicker>
                 <mat-error>Declaration Date is required!</mat-error>
@@ -58,7 +57,8 @@
                   <mat-label>Select the project</mat-label>
                   <mat-select formControlName="propertyID" required #PropertyFilterSelect>
                     <mat-option>
-                      <ngx-mat-select-search [formControl]="propertyFilterCtrl"  placeholderLabel="Search"></ngx-mat-select-search>
+                      <ngx-mat-select-search [formControl]="propertyFilterCtrl" placeholderLabel="Search">
+                      </ngx-mat-select-search>
                     </mat-option>
                     <mat-option *ngFor="let option of filteredProperty| async" [value]="option.propertyID">
                       {{option.addressPremises}}
@@ -74,10 +74,12 @@
               </mat-form-field>
             </div>
           </form>
-          <div fxLayout="column" >
+          <div fxLayout="column">
             <div class="h2 mb-24 section-title">Customer Details</div>
             <div style="background: #fbfbfbb0;" fxFlex>
-              <mat-tab-group fxLayout="column" fxFlex [selectedIndex]="selectedTab" (selectedTabChange)="tabChanged($event)" style="height:100%;width:100%;" [backgroundColor]="tabBackgroundColor">
+              <mat-tab-group fxLayout="column" fxFlex [selectedIndex]="selectedTab"
+                (selectedTabChange)="tabChanged($event)" style="height:100%;width:100%;"
+                [backgroundColor]="tabBackgroundColor">
                 <mat-tab *ngFor="let form of coOwnersForms; let index=idenx" label="{{form.label}}">
                   <form fxLayout="column" [formGroup]="form.owner" style="margin-top:20px">
 
@@ -92,64 +94,77 @@
                       <div fxFlex>
                         <mat-form-field appearance="outline" style="width:98%;">
                           <mat-label>PAN</mat-label>
-                          <input matInput formControlName="pan" (keyup)="form.owner.patchValue({pan: $event.target.value.toUpperCase()})" (blur)="loadCustomerByPan($event.target.value)" required>
+                          <input matInput formControlName="pan"
+                            (keyup)="form.owner.patchValue({pan: $event.target.value.toUpperCase()})"
+                            (blur)="loadCustomerByPan($event.target.value)" required>
                           <mat-error>Valid PAN is required!</mat-error>
                         </mat-form-field>
                       </div>
                       <div fxFlex>
-                        <input hidden type="file" #panDocument accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
-                        <input hidden type="file" #mobileDocument accept="image/*" capture (change)="uploadPan($event)" />
+                        <input hidden type="file" #panDocument
+                          accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
+                        <input hidden type="file" #mobileDocument accept="image/*" capture
+                          (change)="uploadPan($event)" />
                         <div matSuffix style="display:flex;">
                           <span class="pan-upload " (click)="panUploadClick(panDocument)">
                             <label>Upload </label>
                             <!--<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>-->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="#fff" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                              <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="#fff" />
+                            </svg>
                           </span>
                           <label style="padding:15px 10px 0 0;">OR </label>
                           <span *ngIf="!isMobile" class="pan-upload" (click)="openDialog()" style="cursor:pointer;">
-                           
-                              <label>Camera </label>
-                              <mat-icon class="s-22" style="margin-left:5px">add_a_photo</mat-icon>
-                            
+
+                            <label>Camera </label>
+                            <mat-icon class="s-22" style="margin-left:5px">add_a_photo</mat-icon>
+
                           </span>
 
-                          <span *ngIf="isMobile" class="pan-upload mobile" (click)="openDialogInMobile(mobileDocument)" style="cursor:pointer;">
+                          <span *ngIf="isMobile" class="pan-upload mobile" (click)="openDialogInMobile(mobileDocument)"
+                            style="cursor:pointer;">
                             <label>Camera </label>
                             <mat-icon class="s-22" style="margin-left:5px">add_a_photo</mat-icon>
                           </span>
                         </div>
                         <div *ngIf="form.panDoc.fileName" class="padding-bottom-10">
                           <span class="pan-name-label">{{form.panDoc.fileName}}</span>
-                          <img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(form.panDoc.blobID,form.panDoc.fileName,'view')" />
-                          <img src="assets/images/logos/icon-down-24.png" (click)="downloadFile(form.panDoc.blobID,form.panDoc.fileName,'download')" />
-                          <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(form.panDoc.blobID,'pan')">highlight_off</mat-icon>
+                          <img src="assets/images/logos/icons8-view-24.png"
+                            (click)="downloadFile(form.panDoc.blobID,form.panDoc.fileName,'view')" />
+                          <img src="assets/images/logos/icon-down-24.png"
+                            (click)="downloadFile(form.panDoc.blobID,form.panDoc.fileName,'download')" />
+                          <mat-icon class="active-icon red-600 s-25 delete-button"
+                            (click)="deleteFile(form.panDoc.blobID,'pan')">highlight_off</mat-icon>
                         </div>
                       </div>
                     </div>
                     <div fxFlex="1 0 auto" fxLayout="row wrap">
-                      <label style="padding:10px 0 10px 10px;font-size:large;">Address ( Please enter your existing address ) : </label>
+                      <label style="padding:10px 0 10px 10px;font-size:large;">Address ( Please enter your existing
+                        address ) : </label>
                     </div>
                     <div fxFlex="1 0 auto" fxLayout="row wrap">
 
                       <div fxFlex style="align-self:center;">
                         <span class="label-single">Name of the premises/Building/village : </span>
                       </div>
-                      <div fxFlex fxHide.xs >
+                      <div fxFlex fxHide.xs>
                         <mat-form-field appearance="outline" fxFlex>
                           <input matInput formControlName="addressPremises" maxlength="99">
                         </mat-form-field>
                       </div>
-                      <div fxFlex fxHide.xs style="align-self:end;margin-top:5px;"  fxLayoutAlign="first center">
-                        <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()" color="accent" *ngIf="form.showAddressClearBtn">
+                      <div fxFlex fxHide.xs style="align-self:end;margin-top:5px;" fxLayoutAlign="first center">
+                        <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()"
+                          color="accent" *ngIf="form.showAddressClearBtn">
                           Clear Address
                         </button>
                       </div>
-                      <div fxFlex fxHide.gt-xs fxLayout="column" > 
-                        <mat-form-field fxFlex  appearance="outline" >
+                      <div fxFlex fxHide.gt-xs fxLayout="column">
+                        <mat-form-field fxFlex appearance="outline">
                           <input matInput formControlName="addressPremises" maxlength="99">
                         </mat-form-field>
-                        <div fxFlex >
-                          <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()" color="accent" *ngIf="form.showAddressClearBtn">
+                        <div fxFlex>
+                          <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()"
+                            color="accent" *ngIf="form.showAddressClearBtn">
                             Clear Address
                           </button>
                         </div>
@@ -157,13 +172,13 @@
                     </div>
 
                     <div fxFlex="1 0 auto" fxLayout="row wrap">
-                      
-                     
+
+
                       <div fxFlex style="align-self:center;">
                         <span class="label-single">Flat/Door/Block&nbsp;No&nbsp; : </span>
                       </div>
                       <mat-form-field appearance="outline" fxFlex>
-                        <input matInput formControlName="adressLine1" maxlength="99">                       
+                        <input matInput formControlName="adressLine1" maxlength="99">
                       </mat-form-field>
                       <div fxFlex.gt-sm>
                       </div>
@@ -183,21 +198,24 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>City/District </mat-label>
-                        <input matInput formControlName="city"  maxlength="50">                        
+                        <input matInput formControlName="city" maxlength="50" required>
+                        <mat-error>City/District is required!</mat-error>
                       </mat-form-field>
 
                       <mat-form-field class="selection-fix" appearance="outline" fxFlex>
                         <mat-label>State</mat-label>
-                        <mat-select formControlName="stateId"  (selectionChange)="selectedState($event)">
+                        <mat-select formControlName="stateId" (selectionChange)="selectedState($event)">
                           <mat-option *ngFor="let option of states" [value]="option.stateID">
                             {{option.state}}
                           </mat-option>
-                        </mat-select>                      
+                        </mat-select>
+                        <mat-error>State is required!</mat-error>
                       </mat-form-field>
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>PIN Code</mat-label>
-                        <input matInput type="text" formControlName="pinCode"  maxlength="10">                       
+                        <input matInput type="text" formControlName="pinCode" required maxlength="10">
+                        <mat-error>PIN Code is required!</mat-error>
                       </mat-form-field>
 
                     </div>
@@ -215,104 +233,115 @@
                             <mat-error>Mobile is required!</mat-error>
                           </mat-form-field>
                         </div>
-                        </div>
-                        <div fxFlex>
-                          <div fxLayout="row wrap" style="padding:0 3px 0 3px;">
-                            <mat-form-field appearance="outline" style="width:20%;padding:0;margin:0">
-                              <mat-label>ISD</mat-label>
-                              <input matInput maxlength="4" formControlName="isd" [(ngModel)]="isd2way">
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" style="width:80%;padding:0;margin:0">
-                              <mat-label>Alternate number</mat-label>
-                              <input matInput type="number" maxlength="10" formControlName="alternateNumber">
-                            </mat-form-field>
+                      </div>
+                      <div fxFlex>
+                        <div fxLayout="row wrap" style="padding:0 3px 0 3px;">
+                          <mat-form-field appearance="outline" style="width:20%;padding:0;margin:0">
+                            <mat-label>ISD</mat-label>
+                            <input matInput maxlength="4" formControlName="isd" [(ngModel)]="isd2way">
+                          </mat-form-field>
+                          <mat-form-field appearance="outline" style="width:80%;padding:0;margin:0">
+                            <mat-label>Alternate number</mat-label>
+                            <input matInput type="number" maxlength="10" formControlName="alternateNumber">
+                          </mat-form-field>
 
-                          </div>
                         </div>
+                      </div>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>D.O.B </mat-label>
+                        <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth"
+                          placeholder="DD-MM-YYYY">
+                        <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
+                        <mat-datepicker #birthDate></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Email</mat-label>
+                        <input type="email" matInput formControlName="emailID" required maxlength="50">
+                        <mat-error>Email is required!</mat-error>
+                      </mat-form-field>
+                      <div fxFlex.gt-sm>
                         <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>D.O.B </mat-label>
-                          <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth" placeholder="DD-MM-YYYY">
-                          <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
-                          <mat-datepicker #birthDate></mat-datepicker>
+                          <mat-label>Income Tax Login Password</mat-label>
+                          <input type="text" matInput formControlName="incomeTaxPassword" required maxlength="50">
+                          <mat-error>Income tax login password is required!</mat-error>
                         </mat-form-field>
                       </div>
-
-                      <div fxFlex="1 0 auto" fxLayout="row wrap">
-
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Email</mat-label>
-                          <input type="email" matInput formControlName="emailID" required maxlength="50">
-                          <mat-error>Email is required!</mat-error>
-                        </mat-form-field>
-                        <div  fxFlex.gt-sm>
-                          <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Income Tax Login Password</mat-label>
-                            <input type="text" matInput formControlName="incomeTaxPassword" required maxlength="50">
-                            <mat-error>Income tax login password is required!</mat-error>
+                      <div fxFlex.gt-sm></div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
+                      <div fxFlex>
+                        <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
+                          <span class="radio-label" style="align-self:end;">I/We want REpro Services to download Form
+                            16B</span>
+                          <mat-radio-group aria-label="Select an option" formControlName="form16b"
+                            style="align-self:end;">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
+                      <div fxFlex>
+                        <div fxLayout="row wrap">
+                          <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
+                            <span class="radio-label">I/We have already registered in TRACES</span>
+                            <mat-radio-group aria-label="Select an option" formControlName="traces"
+                              style="align-self:end;">
+                              <mat-radio-button value="yes">Yes</mat-radio-button>
+                              <mat-radio-button value="no">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <mat-form-field appearance="outline" *ngIf="form.owner.value.traces=='yes'">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="tracesPassword">
+                            <mat-error>Password is required!</mat-error>
                           </mat-form-field>
                         </div>
-                        <div  fxFlex.gt-sm></div>
                       </div>
-                      <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
-                        <div fxFlex>
-                          <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-                            <span class="radio-label" style="align-self:end;">I/We want REpro Services to download Form 16B</span>
-                            <mat-radio-group aria-label="Select an option" formControlName="form16b" style="align-self:end;">
-                              <mat-radio-button value="yes">Yes</mat-radio-button>
-                              <mat-radio-button value="no">No</mat-radio-button>
-                            </mat-radio-group>
-                          </div>
-                        </div>
-                      </div>
-                      <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
-                        <div fxFlex>
-                          <div fxLayout="row wrap">
-                            <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-                              <span class="radio-label">I/We have already registered in TRACES</span>
-                              <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:end;">
-                                <mat-radio-button value="yes">Yes</mat-radio-button>
-                                <mat-radio-button value="no">No</mat-radio-button>
-                              </mat-radio-group>
-                            </div>
-                            <mat-form-field appearance="outline" *ngIf="form.owner.value.traces=='yes'">
-                              <mat-label>Password</mat-label>
-                              <input matInput formControlName="tracesPassword">
-                              <mat-error>Password is required!</mat-error>
-                            </mat-form-field>
-                          </div>
-                        </div>
 
-                      </div>
-                      <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" *ngIf="form.ShowCoOwnerOption">
-                        <div fxFlex>
-                          <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-                            <span class="radio-label" style="align-self:end;">Do you want to add Co-Owner details</span>
-                            <mat-radio-group aria-label="Select an option" [(ngModel)]="form.AddNewCoOwner" (change)="ShowAddCoOwnerBtn($event)" [ngModelOptions]="{standalone: true}" style="align-self:end;">
-                              <mat-radio-button value="yes">Yes</mat-radio-button>
-                              <mat-radio-button value="no">No</mat-radio-button>
-                            </mat-radio-group>
-                          </div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column"
+                      *ngIf="form.ShowCoOwnerOption">
+                      <div fxFlex>
+                        <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
+                          <span class="radio-label" style="align-self:end;">Do you want to add Co-Owner details</span>
+                          <mat-radio-group aria-label="Select an option" [(ngModel)]="form.AddNewCoOwner"
+                            (change)="ShowAddCoOwnerBtn($event)" [ngModelOptions]="{standalone: true}"
+                            style="align-self:end;">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
                         </div>
                       </div>
-                      <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column" *ngIf="form.ShowMoreCoOwnerOption">
-                        <div fxFlex>
-                          <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-                            <span class="radio-label" style="align-self:end;">Do you want to add more Co-Owner details</span>
-                            <mat-radio-group aria-label="Select an option" [(ngModel)]="form.AddMoreCoOwner" (change)="ShowAddCoOwnerBtn($event)" [ngModelOptions]="{standalone: true}" style="align-self:end;">
-                              <mat-radio-button value="yes">Yes</mat-radio-button>
-                              <mat-radio-button value="no">No</mat-radio-button>
-                            </mat-radio-group>
-                          </div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column"
+                      *ngIf="form.ShowMoreCoOwnerOption">
+                      <div fxFlex>
+                        <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
+                          <span class="radio-label" style="align-self:end;">Do you want to add more Co-Owner
+                            details</span>
+                          <mat-radio-group aria-label="Select an option" [(ngModel)]="form.AddMoreCoOwner"
+                            (change)="ShowAddCoOwnerBtn($event)" [ngModelOptions]="{standalone: true}"
+                            style="align-self:end;">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
                         </div>
                       </div>
-                      <div fxLayout="row" fxLayoutAlign="center center" class="margin-t-40" *ngIf="VisibleCoCownerBtn">
-                        <!--<button mat-raised-button type="button" class="mr-16" (click)="saveOneCustomer(false)" color="accent">
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" class="margin-t-40" *ngIf="VisibleCoCownerBtn">
+                      <!--<button mat-raised-button type="button" class="mr-16" (click)="saveOneCustomer(false)" color="accent">
       Save
     </button>
                  <button mat-raised-button type="button" class="ml-16 mr-16 yellow" (click)="clearCustomer()" color="basic">
                 Clear
               </button>-->
-                        <!--<button mat-raised-button type="button" class="mr-16" (click)="addCoClient()" color="accent">
+                      <!--<button mat-raised-button type="button" class="mr-16" (click)="addCoClient()" color="accent">
         <span>Add Co Owner </span>
         <mat-icon class="s-22" style="margin-left:5px">group</mat-icon>
       </button>
@@ -338,34 +367,49 @@
           </div>
         </div>
       </div>-->
-                      </div>
+                    </div>
 
-</form>
+                  </form>
                   <div fxLayout="column">
                     <div fxFlex style="margin:20px 0 0 0;">
                       <label><span style="font-weight:700;font-size:medium;"> Points to be Noted </span></label>
                     </div>
                     <div fxFlex style="margin: 5px 0 5px 10px">
-                      <label>1. As per Income Tax act,TDS compliance is mandatory for all owners included in Sale Agreement irrespective of who pays for the proeprty</label>
+                      <label>1. As per Income Tax act,TDS compliance is mandatory for all owners included in Sale
+                        Agreement irrespective of who pays for the proeprty</label>
                     </div>
                     <div fxFlex style="margin:5px 0 15px 10px">
-                      <label>2. TDS compliance under section 1941A is in no way related to individual Income Tax compliance</label>
+                      <label>2. TDS compliance under section 1941A is in no way related to individual Income Tax
+                        compliance</label>
+                    </div>
+                    <div fxFlex style="margin:5px 0 15px 10px">
+                      <label>3. Link for how to register PAN in Income tax portal – <a
+                          href="https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing">https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing
+                        </a></label>
+                    </div>
+                    <div fxFlex style="margin:5px 0 15px 10px">
+                      <label>4. Link for how to Reset Income tax Login password – <a
+                          href=" https://www.incometax.gov.in/iec/foportal/help/how-to-reset-e-filing-password">https://www.incometax.gov.in/iec/foportal/help/how-to-reset-e-filing-password</a></label>
                     </div>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="center center">
-                    <button class="mr-8" mat-raised-button *ngIf="form.Previous" style="margin-right:10px;" (click)="NavigateToPreviousTab()" type="button" color="accent">
+                    <button class="mr-8" mat-raised-button *ngIf="form.Previous" style="margin-right:10px;"
+                      (click)="NavigateToPreviousTab()" type="button" color="accent">
                       <mat-icon class="s-22" style="margin-left:5px">arrow_back</mat-icon>
                       Previous
                     </button>
-                    <button class="mr-8" mat-raised-button *ngIf="form.Back" style="margin-right:10px;background:#ffa900;color:#fff;" (click)="deleteCustomer()" type="button">
+                    <button class="mr-8" mat-raised-button *ngIf="form.Back"
+                      style="margin-right:10px;background:#ffa900;color:#fff;" (click)="deleteCustomer()" type="button">
                       Back
                       <mat-icon class="s-22" style="margin-left:5px">cancel</mat-icon>
                     </button>
-                    <button mat-raised-button type="button" *ngIf="form.ShowDeleteBtn" (click)="deleteCustomer()" color="warn">
+                    <button mat-raised-button type="button" *ngIf="form.ShowDeleteBtn" (click)="deleteCustomer()"
+                      color="warn">
                       Delete
                       <mat-icon class="s-22" style="margin-left:5px">delete_outline</mat-icon>
                     </button>
-                    <button class="mr-8" mat-raised-button style="margin-left:8px;" *ngIf="form.Next" (click)="NavigateToNextTab()" color="accent">
+                    <button class="mr-8" mat-raised-button style="margin-left:8px;" *ngIf="form.Next"
+                      (click)="NavigateToNextTab()" color="accent">
                       Next
                       <mat-icon class="s-22" style="margin-left:5px">arrow_forward</mat-icon>
                     </button>
@@ -373,7 +417,7 @@
                   </div>
                 </mat-tab>
                 <mat-tab label="REpro service fee" disabled="{{shareTab}}">
-                 
+
                   <div fxLayout="column">
 
                     <!--<div fxFlex="1 0 auto" fxLayout="row wrap">
@@ -533,20 +577,28 @@
                       </div>
                       <div fxFlex="1 0 auto" fxLayout="column">
 
-                        <div class="h3 padding-t-10"> Please share the payment confirmation proof by email to <a>tdscompliance@reproservices.in </a>.You will receive payment confirmation in response to your e-Mail ONLY. Kindly ensure your subsequent payments to seller is made without deducting TDS.</div>
-                        <div class="h3 padding-t-10"> Further I/we undertake to pay interest, late filing fees, penalty (if any) and also address any income tax proceedings on my TDS liability paid belatedly / payable as on date.</div>
+                        <div class="h3 padding-t-10"> Please share the payment confirmation proof by email to
+                          <a>tdscompliance@reproservices.in </a>.You will receive payment confirmation in response to
+                          your e-Mail ONLY. Kindly ensure your subsequent payments to seller is made without deducting
+                          TDS.</div>
+                        <div class="h3 padding-t-10"> Further I/we undertake to pay interest, late filing fees, penalty
+                          (if any) and also address any income tax proceedings on my TDS liability paid belatedly /
+                          payable as on date.</div>
                         <div class="h3 padding-t-10"> </div>
-                        <div class="h3 padding-t-10">For any clarifications required please contact REpro Support on  +91 9110203238,</div>
+                        <div class="h3 padding-t-10">For any clarifications required please contact REpro Support on +91
+                          9110203238,</div>
                         <div class="h3">For Escalations</div>
-                        <div class="h3">R Ganesh :   +91 9620508968</div>
-                        <div class="h3">Sriram B :   +91 9663751471</div>
+                        <div class="h3">R Ganesh : +91 9620508968</div>
+                        <div class="h3">Sriram B : +91 9663751471</div>
                       </div>
                       <div fxLayout="row" fxLayoutAlign="center center" class="margin-t-40">
-                        <button class="mr-8" mat-raised-button (click)="NavigateToPreviousTab()" style="margin-right:10px;" type="button" color="accent">
+                        <button class="mr-8" mat-raised-button (click)="NavigateToPreviousTab()"
+                          style="margin-right:10px;" type="button" color="accent">
                           <mat-icon class="s-22" style="margin-left:5px">arrow_back</mat-icon>
                           Previous
                         </button>
-                        <button mat-raised-button type="button" class="mr-16" (click)="saveCustomer()" style="background:#1abe5c;color:#fff;">
+                        <button mat-raised-button type="button" class="mr-16" (click)="saveCustomer()"
+                          style="background:#1abe5c;color:#fff;">
                           Submit
                           <mat-icon class="s-22" style="margin-left:5px">save</mat-icon>
                         </button>
@@ -557,8 +609,8 @@
               </mat-tab-group>
             </div>
           </div>
-         
-        
+
+
         </div>
       </div>
       <!-- / CONTENT CARD -->
@@ -566,6 +618,4 @@
     </div>
     <!-- / CENTER -->
   </div>
-  </div>
-
-
+</div>

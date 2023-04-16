@@ -109,9 +109,9 @@ export class ClientComponent implements OnInit, OnDestroy {
       addressPremises: [''],
       adressLine1: [''],
       addressLine2: [''],
-      city: [''],
-      stateId: [''],
-      pinCode: ['', Validators.compose([ this.pinCodeValidator(), Validators.maxLength(10)])],
+      city: ['', Validators.required],
+      stateId: ['', Validators.required],
+      pinCode: ['', Validators.compose([  Validators.required,this.pinCodeValidator(), Validators.maxLength(10)])],
        pan: ['', Validators.compose([Validators.required, this.panValidator(), Validators.maxLength(10)])],
       emailID: ['', Validators.email],
       mobileNo: ['', Validators.compose([Validators.required, , Validators.maxLength(15)])],
@@ -139,9 +139,9 @@ export class ClientComponent implements OnInit, OnDestroy {
       addressPremises: [''],
       adressLine1: [''],
       addressLine2: [''],
-      city: [''],
-      stateId: [''],
-      pinCode: ['', Validators.compose([ this.pinCodeValidator(), Validators.maxLength(10)])],
+      city: ['', Validators.required],
+      stateId: ['', Validators.required],
+      pinCode: ['', Validators.compose([ Validators.required, this.pinCodeValidator(), Validators.maxLength(10)])],
        pan: ['', Validators.compose([Validators.required, this.panValidator(), Validators.maxLength(10)])],
       emailID: ['', Validators.email],
       mobileNo: ['', Validators.compose([Validators.required, , Validators.maxLength(15)])],
@@ -704,8 +704,6 @@ export class ClientComponent implements OnInit, OnDestroy {
     item.get("alternateNumber").clearValidators();
     item.get("adressLine1").clearValidators();
     item.get("addressLine2").clearValidators();
-    item.get("city").clearValidators();
-    item.get("pinCode").clearValidators();
     item.get("isTracesRegistered").clearValidators();
     item.get("tracesPassword").clearValidators();
     item.get("traces").clearValidators();

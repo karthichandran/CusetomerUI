@@ -166,7 +166,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     { 'header': 'Share %', 'field': 'share', 'type': 'textbox' }
     ];
     this.customerData = [];
-    this.getAllStates();
+    //this.getAllStates();
     this.getAllProperties();
     this.checkDevice();
 
@@ -404,12 +404,12 @@ export class ClientComponent implements OnInit, OnDestroy {
   }
 
   saveCustomer(): void {
-    this.clients = [];
-    let share = (100 / this.coOwnersForms.length).toFixed(2);
-    _.forEach(this.coOwnersForms, obj => {
-      obj.owner.value.share = share;
-      this.clients.push(obj.owner.value);
-    });
+    // this.clients = [];
+    // let share = (100 / this.coOwnersForms.length).toFixed(2);
+    // _.forEach(this.coOwnersForms, obj => {
+    //   obj.owner.value.share = share;
+    //   this.clients.push(obj.owner.value);
+    // });
    
     if (!this.validateSharePercentage()) {
       this.SetupShareGrid();
@@ -440,7 +440,6 @@ export class ClientComponent implements OnInit, OnDestroy {
     vm.prospectDto = this.clients;
     this.clientService.saveCustomer(vm).subscribe((res) => {
       this.toastr.success("Thanks for submitting your declaration form. We assure you our best services at all times.");     
-     // this.clear();
       window.location.reload();
     }, (e) => {
         this.toastr.error(e.error.error);

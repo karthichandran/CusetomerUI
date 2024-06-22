@@ -6,8 +6,8 @@ export const environment = {
   production: false,
    baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
    serverUrl: 'https://localhost:44301',
- // baseApiUrl: 'http://leansyshost-001-site3.itempurl.com',
- // serverUrl:  'http://leansyshost-001-site3.itempurl.com',
+//  baseApiUrl: 'http://leansyshost-001-site3.itempurl.com',
+//  serverUrl:  'http://leansyshost-001-site3.itempurl.com',
   oauth: {
     enabled: false,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
     serverUrl: ''

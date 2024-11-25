@@ -4,8 +4,8 @@ export const environment = {
   //serverUrl: 'https://localhost:44301',
   //baseApiUrl: 'http://pragmaticsoft-001-site1.dtempurl.com',  // For qa
   //serverUrl: 'http://pragmaticsoft-001-site1.dtempurl.com',
-  baseApiUrl: 'http://leansyshost-001-site3.itempurl.com',
-  serverUrl: 'http://leansyshost-001-site3.itempurl.com',
+  baseApiUrl: 'http://leansyshost-001-site3.ktempurl.com',
+  serverUrl: 'http://leansyshost-001-site3.ktempurl.com',
   oauth: {
     enabled: false,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
     serverUrl: ''

@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-   baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
-   serverUrl: 'https://localhost:44301',
+   baseApiUrl: 'http://localhost:44360',  // For connecting to server running elsewhere update the base API URL
+   serverUrl: 'https://localhost:44360',
 //  baseApiUrl: 'http://leansyshost-001-site3.itempurl.com',
 //  serverUrl:  'http://leansyshost-001-site3.itempurl.com',
   oauth: {
